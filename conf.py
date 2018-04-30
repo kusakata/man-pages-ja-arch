@@ -174,10 +174,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('man/systemd.kill.5', 'systemd.kill', 'プロセス終了方法の設定',
-     '', 5),
-    ('man/systemd.swap.5', 'systemd.swap', 'スワップユニットの設定',
-     '', 5),
 ]
 
 
