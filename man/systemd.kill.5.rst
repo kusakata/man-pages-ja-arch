@@ -1,15 +1,21 @@
 systemd.kill(5)
 ==================
 
+.. _name:
+
 名称
 --------
 
 systemd.kill - プロセス終了方法の設定
 
+.. _synopsis:
+
 書式
 --------
 
 *service*.service, *socket*.socket, *mount*.mount, *swap*.swap, *scope*.scope
+
+.. _description:
 
 説明
 -----------
@@ -19,6 +25,8 @@ systemd.kill - プロセス終了方法の設定
 この man ページでは上記5つのユニットタイプで共通する設定オプションについて説明しています。全てのユニット設定ファイルで共通のオプションについては :doc:`systemd.unit.5` を参照してください。個別のユニットタイプでしか使えない設定オプションについては :doc:`systemd.service.5`, :doc:`systemd.socket.5`, :doc:`systemd.swap.5`, :doc:`systemd.mount.5`, :doc:`systemd.scope.5` を参照してください。
 
 終了方法の設定オプションはユニットタイプにあわせて [Service], [Socket], [Mount], [Swap] セクションのどれかに設定します。
+
+.. _options:
 
 オプション
 ----------
@@ -46,6 +54,8 @@ systemd.kill - プロセス終了方法の設定
 .. option:: SendSIGKILL=
 
    通常のシャットダウンを行ってもサービスのプロセスが消えない場合、タイムアウト後に残っているプロセスに **SIGKILL** を送信するかどうか指定します。論理値で指定します。デフォルトは "yes" です。
+
+.. _see-also:
 
 関連項目
 --------
