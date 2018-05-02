@@ -16,3 +16,11 @@
 .rst-versions {
     overflow-y: hidden;
 }
+
+.wy-menu-vertical ul.current > li:not(.current) {
+    display: none;
+}
+
+.wy-menu-vertical li.current a span {
+    margin-left: -300px;
+}
