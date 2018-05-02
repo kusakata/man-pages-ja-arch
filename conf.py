@@ -98,10 +98,10 @@ html_theme_options = {
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = 'Arch Linux カーネルドキュメント'
+html_title = 'Arch Linux マニュアルページ'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-html_short_title = 'Linux カーネルドキュメント'
+html_short_title = 'Linux マニュアルページ'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
@@ -134,6 +134,13 @@ html_context = {
 #
 # html_sidebars = {}
 
+# If true, links to the reST sources are added to the pages.
+html_show_sourcelink = False
+
+# If true, an OpenSearch description file will be output, and all pages will
+# contain a <link> tag referring to it.  The value of this option must be the
+# base URL from which the finished HTML is served.
+html_use_opensearch = 'https://man.kusakata.com'
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
