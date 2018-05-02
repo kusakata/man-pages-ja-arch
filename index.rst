@@ -12,8 +12,7 @@ man ページ
 ---------------------------
 
 .. toctree::
+   :glob:
    :maxdepth: 1
 
-   man/systemd.kill.5
-   man/systemd.swap.5
-   man/vercmp.8
+   man/*
