@@ -43,27 +43,27 @@ vercmp を使うことで指定した2つのバージョン番号の関係を判
 例
 ----------
 
-.. code-block:: bash
+.. code-block:: console
 
    $ vercmp 1 2
    -1
 
-.. code-block:: bash
+.. code-block:: console
 
    $ vercmp 2 1
    1
 
-.. code-block:: bash
+.. code-block:: console
 
    $ vercmp 2.0-1 1.7-6
    1
 
-.. code-block:: bash
+.. code-block:: console
 
    $ vercmp 2.0 2.0-13
    0
 
-.. code-block:: bash
+.. code-block:: console
 
    $ vercmp 4.34 1:001
    -1
