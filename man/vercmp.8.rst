@@ -82,8 +82,6 @@ vercmp を使うことで指定した2つのバージョン番号の関係を判
 
 pacman とその関連ツールの最新情報は pacman ウェブサイトの https://www.archlinux.org/pacman/ を見てください。
 
-.. _bugs:
-
 バグ
 ----------
 
