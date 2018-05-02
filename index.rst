@@ -16,3 +16,4 @@ man ページ
 
    man/systemd.kill.5
    man/systemd.swap.5
+   man/vercmp.8
