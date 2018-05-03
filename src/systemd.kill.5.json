@@ -1,5 +1,5 @@
 {
     "package": "systemd",
     "version": "238.76-1",
-    "man": "/usr/share/man/man5/systemd.kill.5.gz",
+    "man": "/usr/share/man/man5/systemd.kill.5.gz"
 }

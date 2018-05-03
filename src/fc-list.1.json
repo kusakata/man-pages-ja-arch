@@ -1,5 +1,5 @@
 {
     "package": "fontconfig",
     "version": "2.13.0+10+g58f5285-1",
-    "man": "/usr/share/man/man1/fc-list.1.gz",
+    "man": "/usr/share/man/man1/fc-list.1.gz"
 }
