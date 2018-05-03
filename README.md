@@ -1,9 +1,13 @@
 # man-pages-ja-arch
 
-To output translation's source info as a json file:
+To output translation's source info as a json file (ex. src/man.1.json):
 
-```$ sh ./makesrcfile.sh man.1```
+```sh
+$ sh ./makesrcfile.sh man.1
+```
 
 To compare source texts between now and when translated:
 
-```$ sh ./makesrcfile.sh man.1```
+```sh
+$ sh ./compare.sh man.1
+```
