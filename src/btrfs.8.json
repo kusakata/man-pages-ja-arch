@@ -1,0 +1,5 @@
+{
+    "package": "btrfs-progs",
+    "version": "4.16-2",
+    "man": "/usr/share/man/man8/btrfs.8.gz"
+}
