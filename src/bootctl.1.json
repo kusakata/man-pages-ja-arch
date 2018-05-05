@@ -1,0 +1,5 @@
+{
+    "package": "systemd",
+    "version": "238.76-1",
+    "man": "/usr/share/man/man1/bootctl.1.gz"
+}
