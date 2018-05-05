@@ -1,0 +1,5 @@
+{
+    "package": "coreutils",
+    "version": "8.29-1",
+    "man": "/usr/share/man/man1/chroot.1.gz"
+}
