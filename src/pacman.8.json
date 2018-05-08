@@ -1,0 +1,5 @@
+{
+    "package": "pacman",
+    "version": "5.0.2-2",
+    "man": "/usr/share/man/man8/pacman.8.gz"
+}
