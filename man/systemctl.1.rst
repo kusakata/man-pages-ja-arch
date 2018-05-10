@@ -19,15 +19,15 @@ systemctl - systemd システム・サービスマネージャを制御する
 オプション
 ----------
 
-The following options are understood:
+以下のオプションを使うことができます:
 
 .. option:: -t, --type=
 
-   The argument should be a comma-separated list of unit types such as service and socket.
+   引数は **service** や **socket** などのユニットタイプをカンマで区切ったリストである必要があります。
 
-   If one of the arguments is a unit type, when listing units, limit display to certain unit types. Otherwise, units of all types will be shown.
+   引数のどれかがユニットタイプの場合、指定したユニットタイプだけが表示されます。そうでない場合、全てのタイプのユニットが表示されます。
 
-   As a special case, if one of the arguments is help, a list of allowed values will be printed and the program will exit.
+   特殊なケースとして、引数のどれかが **help** の場合、利用可能な値のリストが表示されてプログラムは終了します。
 
 .. option:: --state=
 
