@@ -31,33 +31,33 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. option:: --state=
 
-   The argument should be a comma-separated list of unit LOAD, SUB, or ACTIVE states. When listing units, show only those in the specified states. Use --state=failed to show only failed units.
+   引数はユニットの状態の LOAD, SUB, ACTIVE をカンマで区切ったリストである必要があります。ユニットを一覧表示するときに、指定した状態のユニットだけが表示されるようになります。起動に失敗したユニットだけを表示したいときは **--state=failed** を使ってください。
 
-   As a special case, if one of the arguments is help, a list of allowed values will be printed and the program will exit.
+   特殊なケースとして、引数のどれかが **help** の場合、利用可能な値のリストが表示されてプログラムは終了します。
 
 .. option:: -p, --property=
 
-   When showing unit/job/manager properties with the show command, limit display to properties specified in the argument. The argument should be a comma-separated list of property names, such as "MainPID". Unless specified, all known properties are shown. If specified more than once, all properties with the specified names are shown. Shell completion is implemented for property names.
+   **show** コマンドでユニット・ジョブ・マネージャのプロパティを表示するときに、引数に指定したプロパティだけに表示を制限します。引数は "MainPID" などプロパティ名をカンマで区切ったリストである必要があります。指定しなかった場合、全ての既知のプロパティが表示されます。複数のプロパティを指定した場合、指定した名前の全てのプロパティが表示されます。プロパティ名はシェル補完が効きます。
 
-   For the manager itself, systemctl show will show all available properties. Those properties are documented in systemd-system.conf(5).
+   マネージャ自体については、:command:`systemctl show` で利用可能なプロパティが全て表示されます。プロパティについては :doc:`systemd-system.conf.5` で説明しています。
 
-   Properties for units vary by unit type, so showing any unit (even a non-existent one) is a way to list properties pertaining to this type. Similarly, showing any job will list properties pertaining to all jobs. Properties for units are documented in systemd.unit(5), and the pages for individual unit types systemd.service(5), systemd.socket(5), etc.
+   ユニットのプロパティはユニットタイプによって変わるため、(存在しないユニットも含め) あらゆるユニットを表示してこのタイプに関するプロパティを一覧表示します。同じように、全てのジョブを表示することでジョブに関するプロパティが一覧表示されます。ユニットのプロパティについては :doc:`systemd.unit.5` で、あるいは :doc:`systemd.service.5` や :doc:`systemd.socket.5` など個別のユニットタイプのページで説明しています。
 
 .. option:: -a, --all
 
-   When listing units with list-units, also show inactive units and units which are following other units. When showing unit/job/manager properties, show all properties regardless whether they are set or not.
+   **list-units** でユニットを表示するときに、非活性なユニットと他のユニットに追従するユニットも表示します。ユニット・ジョブ・マネージャのプロパティを表示するときは、設定されているかどうかを問わずに全てのプロパティを表示します。
 
-   To list all units installed in the file system, use the list-unit-files command instead.
+   ファイルシステムにインストールされているユニットを全て一覧したいときは、**list-unit-files** コマンドを使ってください。
 
-   When listing units with list-dependencies, recursively show dependencies of all dependent units (by default only dependencies of target units are shown).
+   **list-dependencies** でユニットを一覧表示したときは、依存するユニットの全ての依存関係が表示されます (デフォルトでは指定したユニットの依存関係だけが表示されます)。
 
 .. option:: -r, --recursive
 
-   When listing units, also show units of local containers. Units of local containers will be prefixed with the container name, separated by a single colon character (":").
+   ユニットを一覧表示するときに、ローカルコンテナのユニットも表示します。ローカルコンテナのユニットにはコンテナの名前とコロン文字 (":") が前に付きます。
 
 .. option:: --reverse
 
-   Show reverse dependencies between units with list-dependencies, i.e. follow dependencies of type WantedBy=, RequiredBy=, PartOf=, BoundBy=, instead of Wants= and similar.
+   **list-dependencies** でユニットの逆依存関係が表示されます。*Wants=* などではなく *WantedBy=*, *RequiredBy=*, *PartOf=*, *BoundBy=* タイプの依存を追従します。
 
 .. option:: --after
 
