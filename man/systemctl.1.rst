@@ -61,11 +61,11 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. option:: --after
 
-   With list-dependencies, show the units that are ordered before the specified unit. In other words, recursively list units following the After= dependency.
+   **list-dependencies** で指定したユニットより順番が前に来るユニットを表示します。つまり、*After=* の依存に従って再帰的にユニットを一覧表示します。
 
-   Note that any After= dependency is automatically mirrored to create a Before= dependency. Temporal dependencies may be specified explicitly, but are also created implicitly for units which are WantedBy= targets (see systemd.target(5)), and as a result of other directives (for example RequiresMountsFor=). Both explicitly and implicitly introduced dependencies are shown with list-dependencies.
+   *After=* の依存関係は自動的に複製されて *Before=* の依存が作成されるので注意してください。一時的な依存関係を明示的に指定することもできますが、*WantedBy=* ターゲットのユニットは依存関係が黙示的に作成されたり (:doc:`systemd.target.5` を参照)、他のディレクティブによって作成されることがあります (例: *RequiresMountsFor=*)。明示的・黙示的に定義された依存関係はどちらも **list-dependencies** で表示されます。
 
-   When passed to the list-jobs command, for each printed job show which other jobs are waiting for it. May be combined with --before to show both the jobs waiting for each job as well as all jobs each job is waiting for.
+   **list-jobs** コマンドに指定した場合、各ジョブを待機するジョブが表示されます。**--before** と組み合わせることで各ジョブを待機するジョブだけでなく各ジョブが待機する全てのジョブも表示することが可能です。
 
 .. option:: --before
 
