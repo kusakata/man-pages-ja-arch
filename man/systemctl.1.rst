@@ -69,23 +69,23 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. option:: --before
 
-   With list-dependencies, show the units that are ordered after the specified unit. In other words, recursively list units following the Before= dependency.
+   **list-dependencies** で指定したユニットよりも順番が後のユニットを表示します。つまり、*Before=* の依存に従って再帰的にユニットを一覧表示します。
 
-   When passed to the list-jobs command, for each printed job show which other jobs it is waiting for. May be combined with --after to show both the jobs waiting for each job as well as all jobs each job is waiting for.
+   **list-jobs** コマンドに指定した場合、各ジョブから待機される他のジョブが表示されます。**--after** と組み合わせることで各ジョブから待機される他のジョブだけでなく各ジョブを待機するジョブも表示することが可能です。
 
 .. option:: -l, --full
 
-   Do not ellipsize unit names, process tree entries, journal output, or truncate unit descriptions in the output of status, list-units, list-jobs, and list-timers.
+   ユニットの名前やプロセスツリーのエントリ、ジャーナルの出力を省略表示しません。さらに **status**, **list-units**, **list-jobs**, **list-timers** の出力におけるユニットの説明が切り詰められなくなります。
 
-   Also, show installation targets in the output of is-enabled.
+   また、**is-enabled** の出力でインストールターゲットが表示されます。
 
 .. option:: --value
 
-   When printing properties with show, only print the value, and skip the property name and "=".
+   **show** でプロパティを出力するときに、値だけを出力して、プロパティの名前や "=" を省きます。
 
 .. option:: --show-types
 
-   When showing sockets, show the type of the socket.
+   ソケットを表示するときに、ソケットのタイプを表示します。
 
 .. option:: --job-mode=
 
