@@ -1,0 +1,5 @@
+{
+    "package": "bash-bats",
+    "version": "0.4.0-1",
+    "man": "/usr/share/man/man1/bats.1.gz"
+}
