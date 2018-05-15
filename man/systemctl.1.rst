@@ -89,27 +89,27 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. option:: --job-mode=
 
-   When queuing a new job, this option controls how to deal with already queued jobs. It takes one of "fail", "replace", "replace-irreversibly", "isolate", "ignore-dependencies", "ignore-requirements" or "flush". Defaults to "replace", except when the isolate command is used which implies the "isolate" job mode.
+   新しいジョブをキューに追加したときに、このオプションは既にキューに入っているジョブをどのように扱うのかを制御します。"fail", "replace", "replace-irreversibly", "isolate", "ignore-dependencies", "ignore-requirements", "flush" のどれかひとつを指定します。デフォルトは "replace" ですが、例外的に **isolate** コマンドを使う時だけは黙示的に "isolate" ジョブモードがデフォルトになります。
 
-   If "fail" is specified and a requested operation conflicts with a pending job (more specifically: causes an already pending start job to be reversed into a stop job or vice versa), cause the operation to fail.
+   "fail" が指定されると保留ジョブとリクエストした操作が競合する場合 (既に保留中の開始ジョブが停止ジョブになる、あるいはその逆)、操作は失敗するようになります。
 
-   If "replace" (the default) is specified, any conflicting pending job will be replaced, as necessary.
+   "replace" (デフォルト) が指定された場合、競合する保留ジョブは必要に応じて置き換えられます。
 
-   If "replace-irreversibly" is specified, operate like "replace", but also mark the new jobs as irreversible. This prevents future conflicting transactions from replacing these jobs (or even being enqueued while the irreversible jobs are still pending). Irreversible jobs can still be cancelled using the cancel command. This job mode should be used on any transaction which pulls in shutdown.target.
+   "replace-irreversibly" が指定された場合、"replace" のように操作が行われますが、新しいジョブは不可逆になります。これによって今後は競合する操作によってジョブが置き換えられなくなります (あるいは不可逆のジョブが保留中の際はキューに入れられます)。不可逆ジョブは **cancel** コマンドを使って取り消すことができます。このジョブモードは shutdown.target を引き寄せる操作で使ってください。
 
-   "isolate" is only valid for start operations and causes all other units to be stopped when the specified unit is started. This mode is always used when the isolate command is used.
+   "isolate" は起動操作でのみ指定することができ、指定されたユニットが実行されたとき他のユニットは全て停止します。**isolate** コマンドを使用するときは常にこのモードが使われます。
 
-   "flush" will cause all queued jobs to be canceled when the new job is enqueued.
+   "flush" は新しいジョブがキューに入ったときにキューに入っている全てのジョブを取り消します。
 
-   If "ignore-dependencies" is specified, then all unit dependencies are ignored for this new job and the operation is executed immediately. If passed, no required units of the unit passed will be pulled in, and no ordering dependencies will be honored. This is mostly a debugging and rescue tool for the administrator and should not be used by applications.
+   "ignore-dependencies" が指定された場合、新しいジョブではユニットの依存関係が全て無視され、操作は即座に実行されます。無視されたユニットから必要とされているユニットも無視され、順序の依存関係も考慮されません。このモードは管理者がデバッグや緊急ツールとして使うためのものであり、アプリケーションが使用するべきではありません。
 
-   "ignore-requirements" is similar to "ignore-dependencies", but only causes the requirement dependencies to be ignored, the ordering dependencies will still be honored.
+   "ignore-requirements" は "ignore-dependencies" と似ていますが、必要の依存関係だけ無視され、順序の依存関係は遵守されます。
 
 .. option:: --fail
 
-   Shorthand for --job-mode=fail.
+   **--job-mode=**fail の省略形。
 
-   When used with the kill command, if no units were killed, the operation results in an error.
+   **kill** コマンドと組み合わせて使用した場合、どのユニットも終了しなかったときは操作はエラーになります。
 
 .. option:: -i, --ignore-inhibitors
 
