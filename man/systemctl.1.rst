@@ -113,39 +113,39 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. option:: -i, --ignore-inhibitors
 
-   When system shutdown or a sleep state is requested, ignore inhibitor locks. Applications can establish inhibitor locks to avoid that certain important operations (such as CD burning or suchlike) are interrupted by system shutdown or a sleep state. Any user may take these locks and privileged users may override these locks. If any locks are taken, shutdown and sleep state requests will normally fail (regardless of whether privileged or not) and a list of active locks is printed. However, if --ignore-inhibitors is specified, the locks are ignored and not printed, and the operation attempted anyway, possibly requiring additional privileges.
+   システムのシャットダウンやスリープが要求されたときに、阻害ロックを無視します。特定の重要な操作 (CD 書き込みなど) がシステムのシャットダウンやスリープによって割り込まれないようにアプリケーションは阻害ロックを作成することができます。ロックは全てのユーザーが作成することができ、特権ユーザーはロックを上書きすることができます。ロックが取得されると、シャットダウンやスリープの要求は通常 (特権であるかどうかを問わず) 失敗して、アクティブなロックの一覧が表示されます。しかしながら、**--ignore-inhibitors** を指定した場合、ロックは無視され表示もされず、シャットダウン・スリープ操作が試行されます。場合によっては特権が必要になります。
 
 .. option:: --dry-run
 
-   Just print what would be done. Currently supported by verbs halt, poweroff, reboot, kexec, suspend, hibernate, hybrid-sleep, default, rescue, emergency, and exit.
+   実行されることを出力だけして実際の実行は行いません。現在のところ **halt**, **poweroff**, **reboot**, **kexec**, **suspend**, **hibernate**, **hybrid-sleep**, **default**, **rescue**, **emergency**, **exit** コマンドで使うことができます。
 
 .. option:: -q, --quiet
 
-   Suppress printing of the results of various commands and also the hints about truncated log lines. This does not suppress output of commands for which the printed output is the only result (like show). Errors are always printed.
+   様々なコマンドの結果を出力しないようにして切り詰められたログ行のヒントも無くなります。(**show** など) 出力だけが実行結果であるコマンドの出力は消えません。エラーは常に出力されます。
 
 .. option:: --no-block
 
-   Do not synchronously wait for the requested operation to finish. If this is not specified, the job will be verified, enqueued and systemctl will wait until the unit's start-up is completed. By passing this argument, it is only verified and enqueued. This option may not be combined with --wait.
+   要求された操作が完了するまで同期的に待機しません。このオプションを指定しなかった場合、ジョブは検証されてキューに入ってから、ユニットの起動が完了するまで **systemctl** は待機します。この引数を指定した場合、検証とキューに入れるだけで終わります。このオプションは **--wait** と組み合わせることができません。
 
 .. option:: --wait
 
-   Synchronously wait for started units to terminate again. This option may not be combined with --no-block. Note that this will wait forever if any given unit never terminates (by itself or by getting stopped explicitly); particularly services which use "RemainAfterExit=yes".
+   起動したユニットが終了するまで同期的に待機します。このオプションは **--no-block** と一緒に使うことができません。ユニットがいつまでも終了しないと (ユニット自身が終了したり操作によって停止されないかぎり) 永遠に待機することになるので注意してください。特に "RemainAfterExit=yes" を使用するユニットには注意してください。
 
 .. option:: --user
 
-   Talk to the service manager of the calling user, rather than the service manager of the system.
+   システムのサービスマネージャではなく、呼び出したユーザーのサービスマネージャを操作します。
 
 .. option:: --system
 
-   Talk to the service manager of the system. This is the implied default.
+   システムのサービスマネージャを操作します。特に指定がない場合のデフォルトです。
 
 .. option:: --failed
 
-   List units in failed state. This is equivalent to --state=failed.
+   失敗状態のユニットを一覧表示します。**--state=failed** と同じです。
 
 .. option:: --no-wall
 
-   Do not send wall message before halt, power-off and reboot.
+   システムの停止・電源オフ・再起動の前に wall メッセージを送信しません。
 
 .. option:: --global
 
