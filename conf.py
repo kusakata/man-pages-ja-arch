@@ -39,7 +39,10 @@ release = ''
 # ones.
 extensions = [
     'ogtag',
+    'sphinx_sitemap'
 ]
+
+site_url = 'https://man.kusakata.com/'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['sphinx-template']
