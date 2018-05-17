@@ -1,0 +1,5 @@
+{
+    "package": "pacman",
+    "version": "5.0.2-3",
+    "man": "/usr/share/man/man5/alpm-hooks.5.gz"
+}
