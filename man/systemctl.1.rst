@@ -107,7 +107,7 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. option:: --fail
 
-   **--job-mode=**fail の省略形。
+   **--job-mode=fail** の省略形。
 
    **kill** コマンドと組み合わせて使用した場合、どのユニットも終了しなかったときは操作はエラーになります。
 
@@ -149,15 +149,15 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. option:: --global
 
-   When used with enable and disable, operate on the global user configuration directory, thus enabling or disabling a unit file globally for all future logins of all users.
+   **enable** や **disable** でグローバルなユーザー設定ディレクトリを使用して、全てのユーザーのあらゆるログインについてグローバルなユニットファイルを有効化・無効化します。
 
 .. option:: --no-reload
 
-   When used with enable and disable, do not implicitly reload daemon configuration after executing the changes.
+   **enable** や **disable** で変更を実行した後に黙示的にデーモンの設定をリロードしません。
 
 .. option:: --no-ask-password
 
-   When used with start and related commands, disables asking for passwords. Background services may require input of a password or passphrase string, for example to unlock system hard disks or cryptographic certificates. Unless this option is specified and the command is invoked from a terminal, systemctl will query the user on the terminal for the necessary secrets. Use this option to switch this behavior off. In this case, the password must be supplied by some other means (for example graphical password agents) or the service might fail. This also disables querying the user for authentication for privileged operations.
+   **start** や関連するコマンドで使用したときに、パスワードを要求しないようにします。バックグラウンドサービスはシステムのハードディスクや暗号証明書を解錠するためにパスワードやパスフレーズ文字列の入力を求める場合があります。このオプションを指定しないでコマンドをターミナルから実行すると、**systemctl** はターミナル上でユーザーにパスワードの入力を要求します。このオプションを使うことでパスワードの要求をオフにすることができます。その場合、パスワードは何か別の方法で指定する必要があります (例えばグラフィカルなパスワードエージェント)。パスワードを指定しないとサービスは失敗します。また、このオプションを使用すると特権操作におけるユーザー認証も無効になります。
 
 .. option:: --kill-who=
 
@@ -219,15 +219,15 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. option:: -M, --machine=
 
-   Execute operation on a local container. Specify a container name to connect to.
+   ローカルコンテナで操作を実行します。接続するコンテナの名前を指定してください。
 
 .. option:: --no-pager
 
-   Do not pipe output into a pager.
+   ページャに出力をパイプで渡しません。
 
 .. option:: --no-legend
 
-   Do not print the legend, i.e. column headers and the footer with hints.
+   ヒントが記載されたカラムヘッダーやフッターなど凡例を出力しません。
 
 .. option:: -h, --help
 
