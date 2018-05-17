@@ -1,0 +1,5 @@
+{
+    "package": "systemd",
+    "version": "238.76-1",
+    "man": "/usr/share/man/man5/modules-load.d.5.gz"
+}

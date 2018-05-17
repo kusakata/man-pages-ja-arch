@@ -1,5 +1,5 @@
 {
-    "package": "pacman",
-    "version": "0.13.69-1",
+    "package": "filesystem",
+    "version": "2018.1-2",
     "man": "/usr/share/man/man7/archlinux.7.gz"
 }
