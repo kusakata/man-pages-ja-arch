@@ -161,61 +161,67 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. option:: --kill-who=
 
-   When used with kill, choose which processes to send a signal to. Must be one of main, control or all to select whether to kill only the main process, the control process or all processes of the unit. The main process of the unit is the one that defines the life-time of it. A control process of a unit is one that is invoked by the manager to induce state changes of it. For example, all processes started due to the ExecStartPre=, ExecStop= or ExecReload= settings of service units are control processes. Note that there is only one control process per unit at a time, as only one state change is executed at a time. For services of type Type=forking, the initial process started by the manager for ExecStart= is a control process, while the process ultimately forked off by that one is then considered the main process of the unit (if it can be determined). This is different for service units of other types, where the process forked off by the manager for ExecStart= is always the main process itself. A service unit consists of zero or one main process, zero or one control process plus any number of additional processes. Not all unit types manage processes of these types however. For example, for mount units, control processes are defined (which are the invocations of /usr/bin/mount and /usr/bin/umount), but no main process is defined. If omitted, defaults to all.
+   **kill** で使用した場合、どのプロセスにシグナルを送信するか選択します。**main**, **control**, **all** のどれかを指定することでメインプロセスやコントロールプロセスだけを終了するのか、あるいはユニットの全てのプロセスを終了するのか選択してください。ユニットのメインプロセスは活動時間が定義されているプロセスです。ユニットのコントロールプロセスはマネージャによって呼び出されて状態を変化させるプロセスです。例えばサービスユニットの *ExecStartPre=*, *ExecStop=*, *ExecReload=* 設定によって起動したプロセスは全てコントロールプロセスです。状態変化は一度にひとつしか実行されないため、ユニットごとにコントロールプロセスはひとつしか存在しません。*Type=forking* タイプのサービスの場合、マネージャによって最初に *ExecStart=* で起動するプロセスがコントロールプロセスです。一方でフォークされたプロセスは最終的にユニットのメインプロセスになります (メインプロセスが定まる場合)。他のタイプのサービスユニットではこれと異なり、マネージャによって *ExecStart=* でフォークされたプロセスが常にメインプロセスになります。サービスユニットはゼロあるいはひとつのメインプロセスと、ゼロあるいはひとつのコントロールプロセス、そして任意の数の追加プロセスからなります。ただし全てのユニットタイプがこれらのタイプのプロセスを管理するわけではありません。例として、マウントユニットの場合、コントロールプロセスは定義されますが (/usr/bin/mount と /usr/bin/umount の実行)、メインプロセスは定義されません。省略した場合、デフォルトでは **all** になります。
 
 .. option:: -s, --signal=
 
-   When used with kill, choose which signal to send to selected processes. Must be one of the well-known signal specifiers such as SIGTERM, SIGINT or SIGSTOP. If omitted, defaults to SIGTERM.
+   **kill** と一緒に使用した場合、選択したプロセスにどのシグナルを送信するのか選択します。**SIGTERM**, **SIGINT**, **SIGSTOP** など既知のシグナルのどれかを指定する必要があります。省略した場合のデフォルトは **SIGTERM** です。
 
 .. option:: -f, --force
 
-   When used with enable, overwrite any existing conflicting symlinks.
+   **enable** で使用した場合、競合する既存のシンボリックリンクを上書きします。
 
-   When used with edit, create all of the specified units which do not already exist.
+   **edit** で使用した場合、指定したユニットが存在しない場合はユニットを作成します。
 
-   When used with halt, poweroff, reboot or kexec, execute the selected operation without shutting down all units. However, all processes will be killed forcibly and all file systems are unmounted or remounted read-only. This is hence a drastic but relatively safe option to request an immediate reboot. If --force is specified twice for these operations (with the exception of kexec), they will be executed immediately, without terminating any processes or unmounting any file systems. Warning: specifying --force twice with any of these operations might result in data loss. Note that when --force is specified twice the selected operation is executed by systemctl itself, and the system manager is not contacted. This means the command should succeed even when the system manager has crashed.
+   **halt**, **poweroff**, **reboot**, **kexec** で使用した場合は全てのユニットをシャットダウンせずに選択した操作を実行します。ただし、全てのプロセスを強制的に終了してファイルシステムは全てアンマウントされ読み取り専用で再マウントされます。劇薬ではありますが即座に再起動したいときは比較的安全なオプションです。これらの操作で **--force** を二回指定すると (**kexec** は除く)、プロセスの終了とファイルシステムのアンマウントも行わずに即座に操作が実行されます。
+
+   .. warning::
+
+      上記の操作で **--force** を二回指定したときはデータが破損する可能性があります。
+
+   **--force** を二回指定したときは選択した操作は **systemctl** 自身によって実行され、システムマネージャを介しません。たとえシステムマネージャがクラッシュしていてもコマンドは通ります。
 
 .. option:: --message=
 
-   When used with halt, poweroff or reboot, set a short message explaining the reason for the operation. The message will be logged together with the default shutdown message.
+   **halt**, **poweroff**, **reboot** で使用することで操作の理由を説明する短いメッセージを設定できます。メッセージはデフォルトのシャットダウンメッセージと一緒にログに保存されます。
 
 .. option:: --now
 
-   When used with enable, the units will also be started. When used with disable or mask, the units will also be stopped. The start or stop operation is only carried out when the respective enable or disable operation has been successful.
+   **enable** で使用した場合、ユニットの有効化だけでなく起動も行われます。**disable** や **mask** で使用した場合、ユニットは停止されます。有効化・無効化の操作が成功したときのみ起動・停止操作も行われます。
 
 .. option:: --root=
 
-   When used with enable/disable/is-enabled (and related commands), use the specified root path when looking for unit files. If this option is present, systemctl will operate on the file system directly, instead of communicating with the systemd daemon to carry out changes.
+   **enable/disable/is-enabled** (や関連するコマンド) で使用することで、ユニットファイルを検索するときに指定されたルートパスを使用します。このオプションが存在するとき、**systemctl** は **systemd** デーモンを通して変更を行うのではなくファイルシステムを直接操作します。
 
 .. option:: --runtime
 
-   When used with enable, disable, edit, (and related commands), make changes only temporarily, so that they are lost on the next reboot. This will have the effect that changes are not made in subdirectories of /etc but in /run, with identical immediate effects, however, since the latter is lost on reboot, the changes are lost too.
+   **enable**, **disable**, **edit** (と関連するコマンド) で、変更を一時的に適用します。次回再起動時に変更は消失します。/etc のサブディレクトリではなく /run に変更を加えることで、同じ変更ながら再起動で変更が戻る一時的な変更になります。
 
-   Similarly, when used with set-property, make changes only temporarily, so that they are lost on the next reboot.
+   同じように **set-property** と組み合わせて使用したときも変更が一時的なものになり、再起動で元に戻るようになります。
 
 .. option:: --preset-mode=
 
-   Takes one of "full" (the default), "enable-only", "disable-only". When used with the preset or preset-all commands, controls whether units shall be disabled and enabled according to the preset rules, or only enabled, or only disabled.
+   "full" (デフォルト), "enable-only", "disable-only" のどれかひとつを指定します。**preset** あるいは **preset-all** コマンドで指定することで、プリセットルールにあわせてユニットを無効化・有効化するか、あるいは有効化・無効化のどちらかしか行わないかを制御します。
 
 .. option:: -n, --lines=
 
-   When used with status, controls the number of journal lines to show, counting from the most recent ones. Takes a positive integer argument. Defaults to 10.
+   **status** で使用することで、最後の行から数えて、表示するジャーナルの行数を制御します。正の整数を引数として指定してください。デフォルトは 10 です。
 
 .. option:: -o, --output=
 
-   When used with status, controls the formatting of the journal entries that are shown. For the available choices, see journalctl(1). Defaults to "short".
+   **status** でジャーナルのエントリを表示するフォーマットを制御します。利用可能なオプションについては :doc:`journalctl.1` を参照してください。デフォルトは "short" です。
 
 .. option:: --firmware-setup
 
-   When used with the reboot command, indicate to the system's firmware to boot into setup mode. Note that this is currently only supported on some EFI systems and only if the system was booted in EFI mode.
+   **reboot** コマンドと組み合わせて使用したときに、システムのファームウェアをセットアップモードで起動します。サポートされているのは一部の EFI システムだけであり、システムを EFI モードで起動している場合にのみ使用できます。
 
 .. option:: --plain
 
-   When used with list-dependencies, list-units or list-machines, the output is printed as a list instead of a tree, and the bullet circles are omitted.
+   **list-dependencies**, **list-units**, **list-machines** で出力がツリー状ではなくリストになり、黒丸が省略されます。
 
 .. option:: -H, --host=
 
-   Execute the operation remotely. Specify a hostname, or a username and hostname separated by "@", to connect to. The hostname may optionally be suffixed by a container name, separated by ":", which connects directly to a specific container on the specified host. This will use SSH to talk to the remote machine manager instance. Container names may be enumerated with machinectl -H HOST.
+   操作をリモートで実行します。接続するホスト名、あるいはユーザー名とホスト名を "@" で区切って指定してください。ホスト名には任意で ":" とコンテナ名を後ろに付けることができ、指定したホストの指定されたコンテナに直接接続されます。リモートマシンのマネージャインスタンスに接続するのに SSH が使われます。コンテナ名は **machinectl -H** *HOST* で列挙することができます。
 
 .. option:: -M, --machine=
 
