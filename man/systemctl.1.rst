@@ -253,13 +253,13 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. object:: list-units [PATTERN...]
 
-   List units that systemd currently has in memory. This includes units that are either referenced directly or through a dependency, units that are pinned by applications programmatically, or units that were active in the past and have failed. By default only units which are active, have pending jobs, or have failed are shown; this can be changed with option --all. If one or more PATTERNs are specified, only units matching one of them are shown. The units that are shown are additionally filtered by --type= and --state= if those options are specified.
+   **systemd** がメモリ内で確保しているユニットを一覧表示します。直接参照されているユニットだけでなく、依存関係によって参照されているユニットや、アプリケーションによってプログラム的にピン止めされているユニット、過去にアクティブ状態だったユニットも含まれます。デフォルトではアクティブなユニットと保留ジョブが存在するユニット、起動に失敗したユニットだけが表示されます。**--all** オプションを使うことで全てのユニットを表示できます。ひとつあるいは複数の *PATTERN* を指定した場合、パターンにマッチするユニットだけが表示されます。**--type=** や **--state=** を使ってさらにユニットを絞り込むこともできます。
 
-   This is the default command.
+   これはデフォルトのコマンドです。
 
 .. object:: list-sockets [PATTERN...]
 
-   List socket units currently in memory, ordered by listening address. If one or more PATTERNs are specified, only socket units matching one of them are shown. Produces output similar to
+   メモリ内のソケットユニットを listen しているアドレスの順番で一覧表示します。ひとつあるいは複数の *PATTERN* を指定した場合、パターンにマッチするユニットだけが表示されます。実際には以下のように出力されます::
 
       LISTEN           UNIT                        ACTIVATES
       /dev/initctl     systemd-initctl.socket      systemd-initctl.service
@@ -269,13 +269,15 @@ systemctl - systemd システム・サービスマネージャを制御する
 
       5 sockets listed.
 
-   Note: because the addresses might contains spaces, this output is not suitable for programmatic consumption.
+   .. note::
 
-   Also see --show-types, --all, and --state=.
+      アドレスには空白が含まれることがあるため、出力はプログラムで処理するのに適していません。
+
+   **--show-types**, **--all**, **--state=** も参照してください。
 
 .. object:: list-timers [PATTERN...]
 
-   List timer units currently in memory, ordered by the time they elapse next. If one or more PATTERNs are specified, only units matching one of them are shown. Produces output similar to
+   メモリ内のタイマーユニットを次回に実行される順番で一覧表示します。ひとつあるいは複数の *PATTERN* を指定した場合、パターンにマッチするユニットだけが表示されます。実際には以下のように出力されます::
 
       NEXT                         LEFT          LAST                         PASSED     UNIT                         ACTIVATES
       /a                          n/a           Thu 2017-02-23 13:40:29 EST  3 days ago ureadahead-stop.timer        ureadahead-stop.service
@@ -283,23 +285,23 @@ systemctl - systemd システム・サービスマネージャを制御する
       Sun 2017-02-26 20:37:16 EST  1h 42min left Sun 2017-02-26 11:56:36 EST  6h ago     apt-daily.timer              apt-daily.service
       Sun 2017-02-26 20:57:49 EST  2h 3min left  Sun 2017-02-26 11:56:36 EST  6h ago     snapd.refresh.timer          snapd.refresh.service
 
-   NEXT shows the next time the timer will run.
+   *NEXT* はタイマーが次回に実行される時刻を表示します。
 
-   LEFT shows how long till the next time the timer runs.
+   *LEFT* は次回にタイマーが実行されるまでの残り時間を表示します。
 
-   LAST shows the last time the timer ran.
+   *LAST* は最後にタイマーが実行された時刻を表示します。
 
-   PASSED shows has long as passed since the timer laset ran.
+   *PASSED* は最後にタイマーが実行されてからの経過時間を表示します。
 
-   UNIT shows the name of the timer
+   *UNIT* はタイマーの名前を表示します。
 
-   ACTIVATES shows the name the service the timer activates when it runs.
+   *ACTIVATES* はタイマーが実行されたときに有効になるサービスの名前を表示します。
 
-   Also see --all and --state=.
+   **--all** や **--state=** も参照してください。
 
 .. object:: start PATTERN...
 
-   Start (activate) one or more units specified on the command line.
+   コマンドラインで指定したひとつあるいは複数のユニットを起動します。
 
    Note that glob patterns operate on the set of primary names of units currently in memory. Units which are not active and are not in a failed state usually are not in memory, and will not be matched by any pattern. In addition, in case of instantiated units, systemd is often unaware of the instance name until the instance has been started. Therefore, using glob patterns with start has limited usefulness. Also, secondary alias names of units are not considered.
 
