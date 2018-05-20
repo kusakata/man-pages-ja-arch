@@ -303,35 +303,35 @@ systemctl - systemd システム・サービスマネージャを制御する
 
    コマンドラインで指定したひとつあるいは複数のユニットを起動します。
 
-   Note that glob patterns operate on the set of primary names of units currently in memory. Units which are not active and are not in a failed state usually are not in memory, and will not be matched by any pattern. In addition, in case of instantiated units, systemd is often unaware of the instance name until the instance has been started. Therefore, using glob patterns with start has limited usefulness. Also, secondary alias names of units are not considered.
+   glob パターンはメモリ内に存在するユニットのプライマリ名に適用されます。アクティブでないユニットや起動に失敗したユニットは基本的にメモリ内に存在しないため、パターンを指定してもマッチしません。さらに、インスタンス化されたユニットの場合、systemd はインスタンスが起動しないかぎりインスタンス名を認識しません。したがって、**start** で使える glob パターンは使いどころが限られます。また、ユニットのセカンダリエイリアス名は認識されません。
 
 .. object:: stop PATTERN...
 
-   Stop (deactivate) one or more units specified on the command line.
+   コマンドラインで指定したひとつあるいは複数のユニットを停止します。
 
 .. object:: reload PATTERN...
 
-   Asks all units listed on the command line to reload their configuration. Note that this will reload the service-specific configuration, not the unit configuration file of systemd. If you want systemd to reload the configuration file of a unit, use the daemon-reload command. In other words: for the example case of Apache, this will reload Apache's httpd.conf in the web server, not the apache.service systemd unit file.
+   コマンドラインで指定した全てのユニットの設定をリロードします。リロードされるのはサービスごとの設定であり、systemd のユニット設定ファイルはリロードされないので注意してください。systemd のユニットの設定ファイルをリロードしたいときは、**daemon-reload** コマンドを使ってください。例えば Apache の場合、reload コマンドでリロードされるのはウェブサーバーの Apache の httpd.conf であって、systemd ユニットファイルの apache.service ではありません。
 
-   This command should not be confused with the daemon-reload command.
+   このコマンドと **daemon-reload** コマンドは混同しないようにしてください。
 
 .. object:: restart PATTERN...
 
-   Stop and then start one or more units specified on the command line. If the units are not running yet, they will be started.
+   コマンドラインで指定したひとつあるいは複数のユニットを停止してから起動します。ユニットが起動していなかった場合、起動だけが行われます。
 
-   Note that restarting a unit with this command does not necessarily flush out all of the unit's resources before it is started again. For example, the per-service file descriptor storage facility (see FileDescriptoreStoreMax= in systemd.service(5)) will remain intact as long as the unit has a job pending, and is only cleared when the unit is fully stopped and no jobs are pending anymore. If it is intended that the file descriptor store is flushed out, too, during a restart operation an explicit systemctl stop command followed by systemctl start should be issued.
+   このコマンドでユニットを再起動しても、再起動前にユニットのリソースが全て開放されるとは必ずしも限らないので注意してください。例えば、サービスごとのファイル記述子ストレージファシリティ (:doc:`systemd.service.5` の *FileDescriptoreStoreMax=* を参照) はユニットに保留ジョブがあるかぎり残り続け、ユニットが完全に停止して保留ジョブがなくなったときに初めて消去されます。ファイル記述子ストアも消去したい場合、**systemctl stop** コマンドを明示的に実行してから **systemctl start** コマンドを実行するようにして再起動してください。
 
 .. object:: try-restart PATTERN...
 
-   Stop and then start one or more units specified on the command line if the units are running. This does nothing if units are not running.
+   ユニットが動作中の場合、コマンドラインで指定したひとつあるいは複数のユニットを停止してから起動します。ユニットが起動していなかった場合、何も行いません。
 
 .. object:: reload-or-restart PATTERN...
 
-   Reload one or more units if they support it. If not, stop and then start them instead. If the units are not running yet, they will be started.
+   ユニットがリロードをサポートしている場合、指定したひとつあるいは複数のユニットをリロードします。サポートされていない場合、かわりにユニットを停止してから起動します。ユニットが起動していなかった場合、起動だけが行われます。
 
 .. object:: try-reload-or-restart PATTERN...
 
-   Reload one or more units if they support it. If not, stop and then start them instead. This does nothing if the units are not running.
+   ユニットがリロードをサポートしている場合、指定したひとつあるいは複数のユニットをリロードします。サポートされていない場合、かわりにユニットを停止してから起動します。ユニットが起動していなかった場合、何も行いません。
 
 .. object:: isolate UNIT
 
@@ -485,21 +485,49 @@ systemctl - systemd システム・サービスマネージャを制御する
 
    Checks whether any of the specified unit files are enabled (as with enable). Returns an exit code of 0 if at least one is enabled, non-zero otherwise. Prints the current enable status (see table). To suppress this output, use --quiet. To show installation targets, use --full.
 
-   **Table 1.  is-enabled output**
+   .. list-table:: 表 1. is-enabled の出力
+      :header-rows: 1
+      :widths: 1, 8, 1
 
-   Name	Description	Exit Code
-   "enabled"	Enabled via .wants/, .requires/ or Alias= symlinks (permanently in /etc/systemd/system/, or transiently in /run/systemd/system/).	0
-   "enabled-runtime"		
-   "linked"	Made available through one or more symlinks to the unit file (permanently in /etc/systemd/system/ or transiently in /run/systemd/system/), even though the unit file might reside outside of the unit file search path.	> 0
-   "linked-runtime"		
-   "masked"	Completely disabled, so that any start operation on it fails (permanently in /etc/systemd/system/ or transiently in /run/systemd/systemd/).	> 0
-   "masked-runtime"		
-   "static"	The unit file is not enabled, and has no provisions for enabling in the "[Install]" unit file section.	0
-   "indirect"	The unit file itself is not enabled, but it has a non-empty Also= setting in the "[Install]" unit file section, listing other unit files that might be enabled, or it has an alias under a different name through a symlink that is not specified in Also=. For template unit file, an instance different than the one specified in DefaultInstance= is enabled.	0
-   "disabled"	The unit file is not enabled, but contains an "[Install]" section with installation instructions.	> 0
-   "generated"	The unit file was generated dynamically via a generator tool. See systemd.generator(7). Generated unit files may not be enabled, they are enabled implicitly by their generator.	0
-   "transient"	The unit file has been created dynamically with the runtime API. Transient units may not be enabled.	0
-   "bad"	The unit file is invalid or another error occurred. Note that is-enabled will not actually return this state, but print an error message instead. However the unit file listing printed by list-unit-files might show it.	> 0
+      * - 名前
+        - 説明
+        - 終了コード
+      * - "enabled"
+        - .wants/, .requires/, *Alias=* シンボリックリンク (/etc/systemd/system/ は永続的、/run/systemd/system/ は一時的) で有効化されている。
+        - 0
+      * - "enabled-runtime"
+        -
+        -
+      * - "linked"
+        - ユニットファイルがユニットファイルの検索パスの外にあるが、ひとつあるいは複数のユニットファイルのシンボリックリンクで有効になっている (/etc/systemd/system/ は永続的、/run/systemd/system/ は一時的)。
+        - > 0
+      * - "linked-runtime"
+        -
+        -
+      * - "masked"
+        - 完全に無効化されており、起動操作も失敗する (/etc/systemd/system/ は永続的、/run/systemd/system/ は一時的)。
+        - > 0
+      * - "masked-runtime"
+        -
+        -
+      * - "static"
+        - ユニットファイルは有効化されておらず、ユニットファイルの "[Install]" セクションに有効化するための記述がない。
+        - 0
+      * - "indirect"
+        - ユニットファイル自体は有効になっていないが、ユニットファイルの "[Install]" セクションの *Also=* 設定が空ではなく、有効化されている他のユニットが含まれている、あるいは Also= で指定されていないシンボリックリンクによって別の名前のエイリアスが存在する。テンプレートユニットファイルの場合、*DefaultInstance=* で指定されているインスタンス以外のインスタンスが有効になっている。
+        - 0
+      * - "disabled"
+        - ユニットファイルは有効化されていないが、インストール方法が書かれた "[Install]" セクションが存在する。
+        - > 0
+      * - "generated"
+        - ジェネレータツールによって動的に生成されたユニットファイル。:doc:`systemd.generator.7` を参照。生成されたユニットは有効化することができず、ジェネレータによって黙示的に有効になります。
+        - 0
+      * - "transient"
+        - ランタイム API によって動的に作成されたユニットファイル。一時ユニットは有効化できません。
+        - 0
+      * - "bad"
+        - ユニットファイルが不正またはエラーが発生している。**is-enabled** はこの状態を返すのではなく、エラーメッセージを出力します。ただし **list-unit-files** で出力されたユニットファイルはこの状態を表示します。
+        - > 0
 
 .. object:: mask UNIT...
 
@@ -610,17 +638,37 @@ systemctl - systemd システム・サービスマネージャを制御する
 
    Checks whether the system is operational. This returns success (exit code 0) when the system is fully up and running, specifically not in startup, shutdown or maintenance mode, and with no failed services. Failure is returned otherwise (exit code non-zero). In addition, the current state is printed in a short string to standard output, see the table below. Use --quiet to suppress this output.
 
-   **Table 2. is-system-running output**
+   .. list-table:: 表 2. is-system-running の出力
+      :header-rows: 1
+      :widths: 1, 7, 1
 
-   Name	Description	Exit Code
-   initializing	Early bootup, before basic.target is reached or the maintenance state entered.	> 0
-   starting	Late bootup, before the job queue becomes idle for the first time, or one of the rescue targets are reached.	> 0
-   running	The system is fully operational.	0
-   degraded	The system is operational but one or more units failed.	> 0
-   maintenance	The rescue or emergency target is active.	> 0
-   stopping	The manager is shutting down.	> 0
-   offline	The manager is not running. Specifically, this is the operational state if an incompatible program is running as system manager (PID 1).	> 0
-   unknown	The operational state could not be determined, due to lack of resources or another error cause.	> 0
+      * - 名前
+        - 説明
+        - 終了コード
+      * - *initializing*
+        - 起動初期段階、basic.target に達する前、あるいは *maintenance* ステートに入る前。
+        - > 0
+      * - *starting*
+        - 起動後期段階、ジョブキューが最初に待機状態になる前、あるいはレスキューターゲットのどれかに達する前。
+        - > 0
+      * - *running*
+        - システムが完全に機能している状態。
+        - 0
+      * - *degraded*
+        - システムは機能しているがひとつあるいは複数のユニットの起動に失敗している。
+        - > 0
+      * - *maintenance*
+        - レスキューあるいは緊急ターゲットがアクティブ。
+        - > 0
+      * - *stopping*
+        - マネージャがシャットダウンされている。
+        - > 0
+      * - *offline*
+        - マネージャが動作していない。システムマネージャ (PID 1) として互換性のないプログラムが動作している場合の状態。
+        - > 0
+      * - *unknown*
+        - リソースが不足していたりエラーが発生しているために動作状態が確認できない。
+        - > 0
 
 .. object:: default
 
