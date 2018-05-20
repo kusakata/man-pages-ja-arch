@@ -1,0 +1,5 @@
+{
+    "package": "systemd",
+    "version": "238.76-1",
+    "man": "/usr/share/man/man8/systemd-modules-load.service.8.gz"
+}

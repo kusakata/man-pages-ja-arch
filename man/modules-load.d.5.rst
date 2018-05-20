@@ -42,7 +42,6 @@ modules-load.d - 起動時にロードするカーネルモジュールの設定
    # Load virtio-net.ko at boot
    virtio-net
 
-
 関連項目
 --------
 
