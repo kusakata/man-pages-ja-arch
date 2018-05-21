@@ -335,33 +335,33 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. object:: isolate UNIT
 
-   Start the unit specified on the command line and its dependencies and stop all others, unless they have IgnoreOnIsolate=yes (see systemd.unit(5)). If a unit name with no extension is given, an extension of ".target" will be assumed.
+   コマンドラインで指定したユニットとその依存ユニットを起動して、**IgnoreOnIsolate=yes** が設定されていない他のユニットは全て停止します (:doc:`systemd.unit.5` を参照)。指定したユニット名に拡張子がない場合、拡張子は ".target" として認識されます。
 
-   This is similar to changing the runlevel in a traditional init system. The isolate command will immediately stop processes that are not enabled in the new unit, possibly including the graphical environment or terminal you are currently using.
+   **isolate** は伝統的な init システムにおけるランレベルの変更と似ています。**isolate** コマンドは新しいユニットで有効になっていないプロセスを即座に停止します。使用中のグラフィカル環境やターミナルも含まれます。
 
-   Note that this is allowed only on units where AllowIsolate= is enabled. See systemd.unit(5) for details.
+   **isolate** コマンドが使えるのは **AllowIsolate=** が有効になっているユニットだけです。詳しくは :doc:`systemd.unit.5` を見てください。
 
 .. object:: kill PATTERN...
 
-   Send a signal to one or more processes of the unit. Use --kill-who= to select which process to kill. Use --signal= to select the signal to send.
+   ひとつまたは複数のユニットのプロセスにシグナルを送信します。どのプロセスを終了するか選択するには **--kill-who=** を使います。送信するシグナルを選択するには **--signal=** を使います。
 
 .. object:: is-active PATTERN...
 
-   Check whether any of the specified units are active (i.e. running). Returns an exit code 0 if at least one is active, or non-zero otherwise. Unless --quiet is specified, this will also print the current unit state to standard output.
+   指定したユニットがアクティブ (動作中) かどうか確認します。指定したユニットのどれかひとつでもアクティブなら終了コード **0** が返り、そうでない場合はゼロ以外の値が返ります。**--quiet** が指定されていない場合、現在のユニットの状態が標準出力に出力されます。
 
 .. object:: is-failed PATTERN...
 
-   Check whether any of the specified units are in a "failed" state. Returns an exit code 0 if at least one has failed, non-zero otherwise. Unless --quiet is specified, this will also print the current unit state to standard output.
+   指定されたユニットのどれかが "failed" 状態でないか確認します。どれかひとつでもユニットが失敗していれば終了コード **0** が返り、そうでない場合はゼロ以外の値が返ります。**--quiet** が指定されていない場合、現在のユニットの状態が標準出力に出力されます。
 
 .. object:: status [PATTERN...|PID...]
 
-   Show terse runtime status information about one or more units, followed by most recent log data from the journal. If no units are specified, show system status. If combined with --all, also show the status of all units (subject to limitations specified with -t). If a PID is passed, show information about the unit the process belongs to.
+   ひとつまたは複数のユニットの動作状態情報を簡潔に表示して、ジャーナルから一番最近のログデータを表示します。ユニットを指定しなかった場合、システムの状態を表示します。**--all** と組み合わせたときは、全てのユニットの状態を表示します (ただし **-t** で制限を指定できます)。PID を指定した場合、プロセスが属しているユニットの情報が表示されます。
 
-   This function is intended to generate human-readable output. If you are looking for computer-parsable output, use show instead. By default, this function only shows 10 lines of output and ellipsizes lines to fit in the terminal window. This can be changed with --lines and --full, see above. In addition, journalctl --unit=NAME or journalctl --user-unit= NAME use a similar filter for messages and might be more convenient.
+   この機能は人間が読みやすい出力を生成します。コンピュータでパースするための出力を求めている場合、代わりに **show** を使ってください。デフォルトでは、この機能は出力を10行だけ表示してターミナルウィンドウに行が収まるように切り詰めます。**--lines** と **--full** を使うことでこの挙動は変更できます (上を参照)。さらに、**journalctl --unit=NAME** や **journalctl --user-unit=NAME** はメッセージを同じようにフィルタリングします。
 
-   systemd implicitly loads units as necessary, so just running the status will attempt to load a file. The command is thus not useful for determining if something was already loaded or not. The units may possibly also be quickly unloaded after the operation is completed if there's no reason to keep it in memory thereafter.
+   systemd は必要に応じて黙示的にユニットをロードするため、**status** を実行するだけでもファイルがロードされます。何かがロードされているかどうか確認するためにこのコマンドを使うことはできません。操作が完了した後に特にメモリ内に残しておく理由がなければユニットはすぐにアンロードされる可能性があります。
 
-   **Example 1. Example output from systemctl status**
+   **例 1. systemctl status の出力例**
 
    .. code-block:: console
 
@@ -382,11 +382,11 @@ systemctl - systemd システム・サービスマネージャを制御する
       Jan 12 10:46:45 example.com bluetoothd[8900]: Current Time Service could not be registered
       Jan 12 10:46:45 example.com bluetoothd[8900]: gatt-time-server: Input/output error (5)
 
-   The dot ("●") uses color on supported terminals to summarize the unit state at a glance. White indicates an "inactive" or "deactivating" state. Red indicates a "failed" or "error" state and green indicates an "active", "reloading" or "activating" state.
+   黒丸 ("●") はカラーをサポートしているターミナルでは色を使ってユニットの状態がひと目でわかるようにします。白色は "inactive" または "deactivating" 状態を示します。赤色は "failed" または "error" 状態を、緑色は "active", "reloading", "activating" 状態のどれかを示します。
 
-   The "Loaded:" line in the output will show "loaded" if the unit has been loaded into memory. Other possible values for "Loaded:" include: "error" if there was a problem loading it, "not-found", and "masked". Along with showing the path to the unit file, this line will also show the enablement state. Enabled commands start at boot. See the full table of possible enablement states — including the definition of "masked" — in the documentation for the is-enabled command.
+   "Loaded:" 行にはメモリ内にユニットがロードされているときは "loaded" と表示されます。他にも "Loaded:" には "error" (ロード時に問題が発生した場合) と表示されたり "not-found" や "masked" と表示されることがあります。ユニットファイルのパスと一緒に、ユニットの有効化状態も表示されます。有効化されたコマンドは起動時に実行されます。("masked" の定義を含む) 有効化状態を説明している完全な表が **is-enabled** コマンドのドキュメントに存在します。
 
-   The "Active:" line shows active state. The value is usually "active" or "inactive". Active could mean started, bound, plugged in, etc depending on the unit type. The unit could also be in process of changing states, reporting a state of "activating" or "deactivating". A special "failed" state is entered when the service failed in some way, such as a crash, exiting with an error code or timing out. If the failed state is entered the cause will be logged for later reference.
+   "Active:" 行はアクティブ状態を示します。通常の場合、値は "active" または "inactive" です。アクティブはユニットタイプに応じて起動済み・バインド済み・接続済みなどを意味します。状態が変化している途中のユニットは "activating" または "deactivating" と表示されます。サービスがクラッシュしたりエラーコードで終了したりタイムアウトしたりすると特殊な "failed" 状態になります。失敗状態になったときは後で参照できるように原因がログに保存されます。
 
 .. object:: show [PATTERN...|JOB...]
 
