@@ -390,19 +390,19 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. object:: show [PATTERN...|JOB...]
 
-   Show properties of one or more units, jobs, or the manager itself. If no argument is specified, properties of the manager will be shown. If a unit name is specified, properties of the unit are shown, and if a job ID is specified, properties of the job are shown. By default, empty properties are suppressed. Use --all to show those too. To select specific properties to show, use --property=. This command is intended to be used whenever computer-parsable output is required. Use status if you are looking for formatted human-readable output.
+   ひとつまたは複数のユニット・ジョブ・マネージャのプロパティを表示します。引数を指定しなかった場合、マネージャのプロパティが表示されます。ユニット名を指定した場合、ユニットのプロパティが表示され、ジョブ ID を指定した場合、ジョブのプロパティが表示されます。デフォルトでは、空のプロパティは表示されません。表示したいときは **--all** を使ってください。表示したいプロパティを選択するときは、**--property=** を使います。このコマンドはプログラムでパースできる出力が必要なときに使用してください。人間が読みやすい形式で出力を得たいときは **status** を使います。
 
-   Many properties shown by systemctl show map directly to configuration settings of the system and service manager and its unit files. Note that the properties shown by the command are generally more low-level, normalized versions of the original configuration settings and expose runtime state in addition to configuration. For example, properties shown for service units include the service's current main process identifier as "MainPID" (which is runtime state), and time settings are always exposed as properties ending in the "...USec" suffix even if a matching configuration options end in "...Sec", because microseconds is the normalized time unit used by the system and service manager.
+   **systemctl show** によって表示される多数のプロパティはシステム・サービスマネージャ・ユニットファイルの設定に直接マッピングされています。このコマンドによって表示されるプロパティは基本的にオリジナルの設定をもっと低水準から統一された表現になり、設定に加えて実行状態も表示されます。例えば、サービスユニットで表示されるプロパティにはサービスの現在のメインプロセスの識別子が "MainPID" として表示され (実行状態)、たとえマッチする設定オプションが "...Sec" で終わっていたとしても、システム・サービスマネージャによって使用される統一の時刻単位はマイクロ秒であるため、時刻設定は常に "...USec" で終わるプロパティで表示されます。
 
 .. object:: cat PATTERN...
 
-   Show backing files of one or more units. Prints the "fragment" and "drop-ins" (source files) of units. Each file is preceded by a comment which includes the file name. Note that this shows the contents of the backing files on disk, which may not match the system manager's understanding of these units if any unit files were updated on disk and the daemon-reload command wasn't issued since.
+   ひとつまたは複数のユニットのバッキングファイルを表示します。ユニットの "fragment" と "drop-ins" (ソースファイル) が出力されます。それぞれのファイルにはファイル名を含むコメントが前に付きます。このコマンドはディスク上のバッキングファイルの中身を表示するため、ディスク上のユニットファイルを修正してから **daemon-reload** コマンドをまだ実行していない場合、表示される内容がシステムマネージャが認識しているユニットの中身と一致していない可能性があります。
 
 .. object:: set-property UNIT PROPERTY= VALUE...
 
    Set the specified unit properties at runtime where this is supported. This allows changing configuration parameter properties such as resource control settings at runtime. Not all properties may be changed at runtime, but many resource control settings (primarily those in systemd.resource-control(5)) may. The changes are applied immediately, and stored on disk for future boots, unless --runtime is passed, in which case the settings only apply until the next reboot. The syntax of the property assignment follows closely the syntax of assignments in unit files.
 
-   Example: systemctl set-property foobar.service CPUShares=777
+   例: **systemctl set-property foobar.service CPUShares=777**
 
    If the specified unit appears to be inactive, the changes will be only stored on disk as described previously hence they will be effective when the unit will be started.
 
