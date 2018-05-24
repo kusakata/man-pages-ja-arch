@@ -400,36 +400,36 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. object:: set-property UNIT PROPERTY= VALUE...
 
-   Set the specified unit properties at runtime where this is supported. This allows changing configuration parameter properties such as resource control settings at runtime. Not all properties may be changed at runtime, but many resource control settings (primarily those in systemd.resource-control(5)) may. The changes are applied immediately, and stored on disk for future boots, unless --runtime is passed, in which case the settings only apply until the next reboot. The syntax of the property assignment follows closely the syntax of assignments in unit files.
+   指定したユニットがサポートしている場合、動作中のユニットのプロパティを設定します。動作を止めることなくリソース制御などの設定パラメータを変更することができます。全てのプロパティが動作中に変更できるわけではありませんが、リソース制御の設定の多くは変更可能です (主として :doc:`systemd.resource-control.5` の設定)。変更は即座に適用され、**--runtime** が指定されないかぎりディスクに変更が保存されて今後も変更が適用されます。指定した場合は次の起動時には変更は元に戻ります。プロパティの指定方法はユニットファイル内での設定の指定方法と似ています。
 
    例: **systemctl set-property foobar.service CPUShares=777**
 
-   If the specified unit appears to be inactive, the changes will be only stored on disk as described previously hence they will be effective when the unit will be started.
+   指定したユニットが動作していなかった場合、変更はディスクに保存されてユニットの起動時に変更が適用されます。
 
-   Note that this command allows changing multiple properties at the same time, which is preferable over setting them individually. Like with unit file configuration settings, assigning an empty list will reset the property.
+   このコマンドでは同時に複数のプロパティを変更できます。別々に設定するよりも同時に設定することが推奨されます。ユニットファイルの設定と同じように、空のリストを指定するとプロパティがリセットされます。
 
 .. object:: help PATTERN...|PID...
 
-   Show manual pages for one or more units, if available. If a PID is given, the manual pages for the unit the process belongs to are shown.
+   ひとつまたは複数のユニットのマニュアルページを表示します。PID を指定した場合、プロセスが属しているユニットのマニュアルページが表示されます。
 
 .. object:: reset-failed [PATTERN...]
 
-   Reset the "failed" state of the specified units, or if no unit name is passed, reset the state of all units. When a unit fails in some way (i.e. process exiting with non-zero error code, terminating abnormally or timing out), it will automatically enter the "failed" state and its exit code and status is recorded for introspection by the administrator until the service is stopped/re-started or reset with this command.
+   指定したユニットの "failed" 状態をリセットします。ユニット名を指定しなかった場合、全てのユニットの状態がリセットされます。ユニットが何らかの理由で失敗した場合 (プロセスがゼロ以外のエラーコードで終了した、あるいは異常終了・タイムアウトしたなど)、ユニットは自動的に "failed" 状態になり、サービスが停止・再起動されたりこのコマンドでリセットされるまで、管理者が調査できるように終了コードと状態が記録されます。
 
 .. object:: list-dependencies [UNIT]
 
-   Shows units required and wanted by the specified unit. This recursively lists units following the Requires=, Requisite=, ConsistsOf=, Wants=, BindsTo= dependencies. If no unit is specified, default.target is implied.
+   指定したユニットが依存しているユニットを表示します。*Requires=*, *Requisite=*, *ConsistsOf=*, *Wants=*, *BindsTo=* 依存を追って再帰的にユニットが表示されます。ユニットを指定しなかった場合、default.target の依存が表示されます。
 
-   By default, only target units are recursively expanded. When --all is passed, all other units are recursively expanded as well.
+   デフォルトでは、再帰的に依存関係が表示されるのはターゲットユニットだけです。**--all** を指定することで、他のユニットも再帰的に依存関係を表示するようになります。
 
-   Options --reverse, --after, --before may be used to change what types of dependencies are shown.
+   **--reverse**, **--after**, **--before** を使うことでどのタイプの依存を表示するのか変更できます。
 
 ユニットファイルコマンド
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. object:: list-unit-files [PATTERN...]
 
-   List unit files installed on the system, in combination with their enablement state (as reported by is-enabled). If one or more PATTERNs are specified, only unit files whose name matches one of them are shown (patterns matching unit file system paths are not supported).
+   システムにインストールされているユニットファイルと (**is-enabled** で確認できる) 有効化状態を列挙します。ひとつまたは複数の *PATTERN* を指定した場合、パターンに名前がマッチするユニットファイルだけが表示されます (ユニットファイルのファイルシステムパスにパターンをマッチさせることはできません)。
 
 .. object:: enable UNIT..., enable PATH...
 
