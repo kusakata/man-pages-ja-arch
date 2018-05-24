@@ -1,0 +1,5 @@
+{
+    "package": "xf86-video-amdgpu",
+    "version": "18.0.1-2",
+    "man": "/usr/share/man/man4/amdgpu.4.gz"
+}
