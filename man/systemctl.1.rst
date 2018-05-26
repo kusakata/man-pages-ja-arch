@@ -433,57 +433,57 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. object:: enable UNIT..., enable PATH...
 
-   Enable one or more units or unit instances. This will create a set of symlinks, as encoded in the "[Install]" sections of the indicated unit files. After the symlinks have been created, the system manager configuration is reloaded (in a way equivalent to daemon-reload), in order to ensure the changes are taken into account immediately. Note that this does not have the effect of also starting any of the units being enabled. If this is desired, combine this command with the --now switch, or invoke start with appropriate arguments later. Note that in case of unit instance enablement (i.e. enablement of units of the form foo@bar.service), symlinks named the same as instances are created in the unit configuration directory, however they point to the single template unit file they are instantiated from.
+   ひとつまたは複数のユニット、あるいはユニットインスタンスを有効化します。有効化すると指定したユニットファイルの "[Install]" セクションの記述に従って、シンボリックリンクが作成されます。シンボリックリンクを作成した後、変更を即座に適用するためにシステムマネージャの設定がリロードされます (**daemon-reload** と同じ)。ただし有効化されたユニットがすぐに起動するというわけではないので注意してください。ユニットを有効化してから起動したい場合、**--now** スイッチを付けて実行するか、あるいは後から **start** コマンドを実行してください。ユニットインスタンス (foo@bar.service という形式のユニット) を有効化した場合、インスタンスと同じ名前のシンボリックリンクがユニットの設定ディレクトリに作成されます。リンク先はインスタンス化する元のテンプレートユニットファイルになります。
 
-   This command expects either valid unit names (in which case various unit file directories are automatically searched for unit files with appropriate names), or absolute paths to unit files (in which case these files are read directly). If a specified unit file is located outside of the usual unit file directories, an additional symlink is created, linking it into the unit configuration path, thus ensuring it is found when requested by commands such as start. The file system where the linked unit files are located must be accessible when systemd is started (e.g. anything underneath /home or /var is not allowed, unless those directories are located on the root file system).
+   このコマンドでは適当なユニットの名前を指定するか (その場合は指定した名前で様々なユニットファイルのディレクトリが自動で検索されます)、あるいはユニットファイルの絶対パスを指定します (その場合は直接そのファイルが読み込まれます)。指定したユニットファイルが通常のユニットファイルのディレクトリにない場合、追加のシンボリックリンクが作成され、ユニットの設定パスにリンクが張られて、**start** などのコマンドで認識するようになります。リンク先のユニットファイルが存在するファイルシステムは systemd が起動したときにアクセスできるパスでないといけません (例: /home や /var 下のディレクトリはルートファイルシステム上にないかぎり使用できません)。
 
-   This command will print the file system operations executed. This output may be suppressed by passing --quiet.
+   このコマンドは実行されるファイルシステム操作を出力します。**--quiet** を指定することで出力は消すことができます。
 
-   Note that this operation creates only the symlinks suggested in the "[Install]" section of the unit files. While this command is the recommended way to manipulate the unit configuration directory, the administrator is free to make additional changes manually by placing or removing symlinks below this directory. This is particularly useful to create configurations that deviate from the suggested default installation. In this case, the administrator must make sure to invoke daemon-reload manually as necessary, in order to ensure the changes are taken into account.
+   この操作ではユニットファイルの "[Install]" セクションに書かれているようにシンボリックリンクを作成することだけが行われます。ユニットの設定ディレクトリを操作するときはこのコマンドを使うことが推奨されますが、管理者はディレクトリに手動でシンボリックリンクを作成・削除することでも設定を変更できます。特にデフォルトのインストール環境から派生した設定を作成したい場合に有用です。その場合、管理者は必要に応じて **daemon-reload** を手動で実行して、変更を適用するようにしてください。
 
-   Enabling units should not be confused with starting (activating) units, as done by the start command. Enabling and starting units is orthogonal: units may be enabled without being started and started without being enabled. Enabling simply hooks the unit into various suggested places (for example, so that the unit is automatically started on boot or when a particular kind of hardware is plugged in). Starting actually spawns the daemon process (in case of service units), or binds the socket (in case of socket units), and so on.
+   ユニットの有効化はユニットの起動 (アクティベート) とは異なります。起動は **start** コマンドを使います。ユニットの有効化と起動は基本的に独立した操作です: ユニットは起動せずに有効化したり、逆に有効化せずに起動することができます。有効化では単にユニットが適当な場所にフックされます (例えば、ユニットがブート時に自動的に起動したり、特定のハードウェアを接続したときに起動するようになります)。起動では実際にデーモンプロセスが生成されたり (サービスユニットの場合)、ソケットがバインドされたり (ソケットユニットの場合) します。
 
-   Depending on whether --system, --user, --runtime, or --global is specified, this enables the unit for the system, for the calling user only, for only this boot of the system, or for all future logins of all users. Note that in the last case, no systemd daemon configuration is reloaded.
+   **--system**, **--user**, **--runtime**, **--global** を指定することで、ユニットをシステム全体で有効化したり、呼び出したユーザー限定で有効化したり、次回のブート限定で有効化したり、全てのユーザーの今後のログイン全てで有効化することができます。最後の場合、systemd のデーモン設定はリロードされません。
 
-   Using enable on masked units is not supported and results in an error.
+   マスク化されたユニットを **enable** することはできずエラーが返ります。
 
 .. object:: disable UNIT...
 
-   Disables one or more units. This removes all symlinks to the unit files backing the specified units from the unit configuration directory, and hence undoes any changes made by enable or link. Note that this removes all symlinks to matching unit files, including manually created symlinks, and not just those actually created by enable or link. Note that while disable undoes the effect of enable, the two commands are otherwise not symmetric, as disable may remove more symlinks than a prior enable invocation of the same unit created.
+   ひとつまたは複数のユニットを無効化します。ユニットの設定ディレクトから指定したユニットに関連するユニットファイルのシンボリックリンクが削除され、**enable** や **link** による変更が元に戻されます。ユニットファイルにマッチする全てのシンボリックリンクが削除されるので注意してください。手動で作成したシンボリックリンクなど **enable** や **link** では作成していないシンボリックリンクも削除されます。**disable** は **enable** による効果を元に戻しますが、2つのコマンドは決して対称ではなく、**enable** によって作成されたシンボリックリンクよりも **disable** によって削除されるシンボリックリンクのほうが多いこともあります。
 
-   This command expects valid unit names only, it does not accept paths to unit files.
+   このコマンドは適当なユニットの名前だけしか指定できません。ユニットファイルのパスは指定できません。
 
-   In addition to the units specified as arguments, all units are disabled that are listed in the Also= setting contained in the "[Install]" section of any of the unit files being operated on.
+   引数として指定されたユニットだけでなく、対象のユニットファイルの "[Install]" セクションに記述されている *Also=* 設定に列挙されているユニットも無効化されます。
 
-   This command implicitly reloads the system manager configuration after completing the operation. Note that this command does not implicitly stop the units that are being disabled. If this is desired, either combine this command with the --now switch, or invoke the stop command with appropriate arguments later.
+   このコマンドは操作が完了した後に黙示的にシステムマネージャの設定をリロードします。このコマンドで無効化されたユニットは黙示的に停止されないので注意してください。ユニットを止めたいときは、このコマンドに **--now** スイッチを組み合わせるか、あるいは後で **stop** コマンドを実行してください。
 
-   This command will print information about the file system operations (symlink removals) executed. This output may be suppressed by passing --quiet.
+   このコマンドは実行されるファイルシステムの操作 (シンボリックリンクの削除) についての情報を出力します。**--quiet** を指定することで出力は消すことができます。
 
-   This command honors --system, --user, --runtime and --global in a similar way as enable.
+   このコマンドでは **enable** と同じように **--system**, **--user**, **--runtime**, **--global** を認識します。
 
 .. object:: reenable UNIT...
 
-   Reenable one or more units, as specified on the command line. This is a combination of disable and enable and is useful to reset the symlinks a unit file is enabled with to the defaults configured in its "[Install]" section. This command expects a unit name only, it does not accept paths to unit files.
+   コマンドラインで指定した、ひとつまたは複数のユニットを再有効化します。再有効化は **disable** と **enable** の組み合わせで、有効化したユニットファイルのシンボリックリンクを "[Install]" セクションに設定されたデフォルトにリセットしたい場合に有用です。このコマンドはユニットの名前だけしか指定できません。ユニットファイルのパスは指定できません。
 
 .. object:: preset UNIT...
 
-   Reset the enable/disable status one or more unit files, as specified on the command line, to the defaults configured in the preset policy files. This has the same effect as disable or enable, depending how the unit is listed in the preset files.
+   コマンドラインで指定した、ひとつまたは複数のユニットファイルの有効化・無効化状態をリセットして、プリセットポリシーファイルに設定されたデフォルト状態に戻します。プリセットファイルにユニットが記述されているかどうかに応じて、**disable** あるいは **enable** と全く同じ操作が行われます。
 
-   Use --preset-mode= to control whether units shall be enabled and disabled, or only enabled, or only disabled.
+   ユニットの有効化・無効化の両方を行う、あるいは有効化・無効化のどちらかしか行われないように制御したい場合、**--preset-mode=** を使ってください。
 
-   If the unit carries no install information, it will be silently ignored by this command. UNIT must be the real unit name, any alias names are ignored silently.
+   ユニットにインストール情報が記載されていない場合、このコマンドは特にエラーを吐かずに終了します。*UNIT* はユニットの正確な名前である必要があり、エイリアス名は無視されます。
 
-   For more information on the preset policy format, see systemd.preset(5). For more information on the concept of presets, please consult the Preset [#]_ document.
+   プリセットポリシーのフォーマットについて詳しくは :doc:`systemd.preset.5` を見てください。プリセットの概念についての情報は **Preset** [#]_ ドキュメントを読んでください。
 
 .. object:: preset-all
 
-   Resets all installed unit files to the defaults configured in the preset policy file (see above).
+   インストールされている全てのユニットファイルをプリセットポリシーファイル (上を参照) で設定されているデフォルト状態にリセットします。
 
-   Use --preset-mode= to control whether units shall be enabled and disabled, or only enabled, or only disabled.
+   ユニットの有効化・無効化の両方を行う、あるいは有効化・無効化のどちらかしか行われないように制御したい場合、**--preset-mode=** を使ってください。
 
 .. object:: is-enabled UNIT...
 
-   Checks whether any of the specified unit files are enabled (as with enable). Returns an exit code of 0 if at least one is enabled, non-zero otherwise. Prints the current enable status (see table). To suppress this output, use --quiet. To show installation targets, use --full.
+   指定したユニットファイルが (**enable** によって) 有効化されているかどうか確認します。指定されたユニットの中で有効化されているユニットがない場合は終了コード 0 が返り、それ以外の場合は 0 以外の値が返ります。現在の有効化状態が出力されます (表を参照)。出力を消すには、**--quiet** を使ってください。インストールターゲットを表示したい場合は **--full** を使ってください。
 
    .. list-table:: 表 1. is-enabled の出力
       :header-rows: 1
