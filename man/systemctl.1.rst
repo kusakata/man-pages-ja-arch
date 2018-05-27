@@ -531,11 +531,11 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. object:: mask UNIT...
 
-   Mask one or more units, as specified on the command line. This will link these unit files to /dev/null, making it impossible to start them. This is a stronger version of disable, since it prohibits all kinds of activation of the unit, including enablement and manual activation. Use this option with care. This honors the --runtime option to only mask temporarily until the next reboot of the system. The --now option may be used to ensure that the units are also stopped. This command expects valid unit names only, it does not accept unit file paths.
+   コマンドラインで指定したひとつまたは複数のユニットをマスクします。指定されたユニットファイルは /dev/null にリンクされ、ユニットを起動することができなくなります。これは **disable** よりも強力で、有効化や手動アクティベーションを含む、あらゆる種類のアクティベーションがユニットに効かなくなります。このオプションは注意して使ってください。**--runtime** オプションと組み合わせることで次回起動時まで一時的にマスクすることもできます。**--now** オプションを使用するとユニットの停止も行われます。このコマンドはユニットの名前しか認識せず、ユニットファイルのパスを指定することはできません。
 
 .. object:: unmask UNIT...
 
-   Unmask one or more unit files, as specified on the command line. This will undo the effect of mask. This command expects valid unit names only, it does not accept unit file paths.
+   コマンドラインで指定したひとつまたは複数のユニットファイルのマスクを解除します。**mask** の効果が元に戻されます。このコマンドはユニットの名前しか認識せず、ユニットファイルのパスを指定することはできません。
 
 .. object:: link PATH...
 
