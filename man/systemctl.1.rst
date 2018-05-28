@@ -539,59 +539,59 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. object:: link PATH...
 
-   Link a unit file that is not in the unit file search paths into the unit file search path. This command expects an absolute path to a unit file. The effect of this may be undone with disable. The effect of this command is that a unit file is made available for commands such as start, even though it is not installed directly in the unit search path. The file system where the linked unit files are located must be accessible when systemd is started (e.g. anything underneath /home or /var is not allowed, unless those directories are located on the root file system).
+   ユニットファイルの検索パスに存在しないユニットファイルをユニットファイルの検索パスにリンクします。このコマンドではユニットファイルの絶対パスを指定してください。このコマンドによる操作は **disable** で元に戻すことができます。このコマンドを使うことでユニットの検索に直接インストールされていなくても、**start** などのコマンドでユニットファイルを使うことができるようになります。リンクを作成するユニットファイルが存在するファイルシステムは systemd が起動したときにアクセスできなくてはなりません (例: /home や /var 下のディレクトリはルートファイルシステム上にないかぎり使用できません)。
 
 .. object:: revert UNIT...
 
-   Revert one or more unit files to their vendor versions. This command removes drop-in configuration files that modify the specified units, as well as any user-configured unit file that overrides a matching vendor supplied unit file. Specifically, for a unit "foo.service" the matching directories "foo.service.d/" with all their contained files are removed, both below the persistent and runtime configuration directories (i.e. below /etc/systemd/system and /run/systemd/system); if the unit file has a vendor-supplied version (i.e. a unit file located below /usr) any matching persistent or runtime unit file that overrides it is removed, too. Note that if a unit file has no vendor-supplied version (i.e. is only defined below /etc/systemd/system or /run/systemd/system, but not in a unit file stored below /usr), then it is not removed. Also, if a unit is masked, it is unmasked.
+   ひとつまたは複数のユニットファイルをディストリビューションが提供しているバージョンにリバートします。このコマンドは指定したユニットに変更を加えるドロップイン設定ファイルを削除し、ディストリビューションが提供するユニットファイルを上書きするようにユーザーが設定したユニットファイルも削除されます。例えば "foo.service" ユニットに対応する永続的・一時的な設定ディレクトリ (/etc/systemd/system と /run/systemd/system) の "foo.service.d/" ディレクトリに含まれているファイルは全て削除されます。ユニットファイルにディストリビューションが提供するバージョン (/usr 下のユニットファイル) が存在する場合、同名の永続的・一時的な上書きユニットファイルも削除されます。ユニットファイルにディストリビューション提供バージョンが存在しない場合 (/etc/systemd/system または /run/systemd/system でのみ定義されており /usr に同名のユニットファイルが保存されていない場合)、ユニットファイルは削除されません。また、ユニットがマスクされている場合、マスクが解除されます。
 
-   Effectively, this command may be used to undo all changes made with systemctl edit, systemctl set-property and systemctl mask and puts the original unit file with its settings back in effect.
+   事実上、このコマンドは **systemctl edit**, **systemctl set-property**, **systemctl mask** による変更を全て差し戻してオリジナルのユニットファイルに設定をリセットします。
 
 .. object:: add-wants TARGET UNIT..., add-requires TARGET UNIT...
 
-   Adds "Wants=" or "Requires=" dependencies, respectively, to the specified TARGET for one or more units.
+   ひとつまたは複数のユニットを指定した *TARGET* の "Wants=" または "Requires=" 依存に追加します。
 
-   This command honors --system, --user, --runtime and --global in a way similar to enable.
+   このコマンドは **enable** と同じように **--system**, **--user**, **--runtime**, **--global** を認識します。
 
 .. object:: edit UNIT...
 
-   Edit a drop-in snippet or a whole replacement file if --full is specified, to extend or override the specified unit.
+   指定したユニットを拡張・上書きするドロップインスニペットあるいは (**--full** を指定した場合は) 置換ファイルを編集します。
 
-   Depending on whether --system (the default), --user, or --global is specified, this command creates a drop-in file for each unit either for the system, for the calling user, or for all futures logins of all users. Then, the editor (see the "Environment" section below) is invoked on temporary files which will be written to the real location if the editor exits successfully.
+   **--system** (デフォルト), **--user**, **--global** のどれを指定したかによって、ユニットのドロップインファイルが作成される場所が変わり、それぞれシステム全体・コマンドを実行したユーザー・全てのユーザーの全てのログインに反映されます。そして一時ファイルでエディタ (下の `環境変数`_ セクションを参照) が起動して、エディタが正しく終了すると実際の場所にファイルが書き込まれます。
 
-   If --full is specified, this will copy the original units instead of creating drop-in files.
+   **--full** を指定した場合、ドロップインファイルを作成するかわりにオリジナルのユニットがコピーされます。
 
-   If --force is specified and any units do not already exist, new unit files will be opened for editing.
+   **--force** を指定して既存のユニットが存在しない場合、新しいユニットファイルが開かれます。
 
-   If --runtime is specified, the changes will be made temporarily in /run and they will be lost on the next reboot.
+   **--runtime** を指定した場合、変更は /run に一時的に作成されるため次回起動時に変更は失われます。
 
-   If the temporary file is empty upon exit, the modification of the related unit is canceled.
+   エディタの終了時に一時ファイルが空だった場合、ユニットの編集はキャンセルされます。
 
-   After the units have been edited, systemd configuration is reloaded (in a way that is equivalent to daemon-reload).
+   ユニットを編集したら、systemd の設定がリロードされます (**daemon-reload** と同じ効果)。
 
-   Note that this command cannot be used to remotely edit units and that you cannot temporarily edit units which are in /etc, since they take precedence over /run.
+   このコマンドではリモートでユニットを編集したり /etc に存在するユニットを一時的に編集することはできません。/run よりも優先して使われるためです。
 
 .. object:: get-default
 
-   Return the default target to boot into. This returns the target unit name default.target is aliased (symlinked) to.
+   デフォルトの起動ターゲットを返します。default.target にエイリアス (シンボリックリンク) されているターゲットのユニット名が返されます。
 
 .. object:: set-default TARGET
 
-   Set the default target to boot into. This sets (symlinks) the default.target alias to the given target unit.
+   デフォルトの起動ターゲットを設定します。指定したターゲットユニットに default.target エイリアス (シンボリックリンク) が設定されます。
 
 マシンコマンド
 ^^^^^^^^^^^^^^^^^
 
 .. object:: list-machines [PATTERN...]
 
-   List the host and all running local containers with their state. If one or more PATTERNs are specified, only containers matching one of them are shown.
+   ホストと実行中のローカルコンテナとコンテナの状態を列挙します。ひとつまたは複数の *PATTERN* が指定された場合、パターンにマッチするコンテナだけが表示されます。
 
 ジョブコマンド
 ^^^^^^^^^^^^^^^^^
 
 .. object:: list-jobs [PATTERN...]
 
-   List jobs that are in progress. If one or more PATTERNs are specified, only jobs for units matching one of them are shown.
+   進行中のジョブを一覧表示します。ひとつまたは複数の *PATTERN* が指定された場合、パターンにマッチするユニットのジョブだけが表示されます。
 
    When combined with --after or --before the list is augmented with information on which other job each job is waiting for, and which other jobs are waiting for it, see above.
 
