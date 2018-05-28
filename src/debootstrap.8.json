@@ -1,0 +1,5 @@
+{
+    "package": "debootstrap",
+    "version": "1.0.100-1",
+    "man": "/usr/share/man/man8/debootstrap.8.gz"
+}
