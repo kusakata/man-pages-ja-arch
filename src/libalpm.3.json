@@ -1,0 +1,5 @@
+{
+    "package": "pacman",
+    "version": "5.1.0-1",
+    "man": "/usr/share/man/man3/libalpm.3.gz"
+}
