@@ -593,50 +593,50 @@ systemctl - systemd システム・サービスマネージャを制御する
 
    進行中のジョブを一覧表示します。ひとつまたは複数の *PATTERN* が指定された場合、パターンにマッチするユニットのジョブだけが表示されます。
 
-   When combined with --after or --before the list is augmented with information on which other job each job is waiting for, and which other jobs are waiting for it, see above.
+   **--after** または **--before** と組み合わせることでジョブが待機する他のジョブ、あるいはどのジョブによって待機されるか情報が追加されます。上を参照。
 
 .. object:: cancel JOB...
 
-   Cancel one or more jobs specified on the command line by their numeric job IDs. If no job ID is specified, cancel all pending jobs.
+   コマンドラインから数字のジョブ ID で指定したひとつまたは複数のジョブを取り消します。ジョブ ID を指定しなかった場合、保留中の全てのジョブが取り消されます。
 
 環境コマンド
 ^^^^^^^^^^^^^^^
 
 .. object:: show-environment
 
-   Dump the systemd manager environment block. This is the environment block that is passed to all processes the manager spawns. The environment block will be dumped in straight-forward form suitable for sourcing into most shells. If no special characters or whitespace is present in the variable values, no escaping is performed, and the assignments have the form "VARIABLE=value". If whitespace or characters which have special meaning to the shell are present, dollar-single-quote escaping is used, and assignments have the form "VARIABLE=$'value'". This syntax is known to be supported by bash(1), zsh(1), ksh(1), and busybox(1)'s ash(1), but not dash(1) or fish(1).
+   systemd マネージャの環境変数ブロックがダンプされます。マネージャが生成する全てのプロセスに渡されるものと同じ環境ブロックです。環境ブロックはシェルから読み込むことができる形式で出力されます。環境変数の値に特殊文字や空白が含まれていない場合、エスケープは行われず、"VARIABLE=value" という形式で吐き出されます。空白やシェルにとって特殊な文字が含まれている場合、ドル記号とシングルクォートによるエスケープが使われ、"VARIABLE=$'value'" という形式で吐き出されます。この形式は :doc:`bash.1`, :doc:`zsh.1`, :doc:`ksh.1`, :doc:`busybox.1` の :doc:`ash.1` でサポートされていますが、:doc:`dash.1` と :doc:`fish.1` ではサポートされていません。
 
 .. object:: set-environment VARIABLE=VALUE...
 
-   Set one or more systemd manager environment variables, as specified on the command line.
+   コマンドラインで指定したひとつまたは複数の systemd マネージャの環境変数を設定。
 
 .. object:: unset-environment VARIABLE...
 
-   Unset one or more systemd manager environment variables. If only a variable name is specified, it will be removed regardless of its value. If a variable and a value are specified, the variable is only removed if it has the specified value.
+   ひとつまたは複数の systemd マネージャ環境変数の設定を解除。変数名だけ指定された場合、変数の値は関係なく変数が削除されます。変数と値が指定された場合、値が一致している場合にのみ変数が削除されます。
 
 .. object:: import-environment [VARIABLE...]
 
-   Import all, one or more environment variables set on the client into the systemd manager environment block. If no arguments are passed, the entire environment block is imported. Otherwise, a list of one or more environment variable names should be passed, whose client-side values are then imported into the manager's environment block.
+   クライアントに設定されている全て、あるいはひとつ・複数の環境変数を systemd マネージャの環境変数ブロックにインポートします。引数を指定しなかった場合、環境変数ブロック全てがインポートされます。ひとつまたは複数の環境変数の名前を指定した場合、指定した環境変数のクライアントの値がマネージャの環境変数ブロックにインポートされます。
 
 マネージャライフサイクルコマンド
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. object:: daemon-reload
 
-   Reload the systemd manager configuration. This will rerun all generators (see systemd.generator(7)), reload all unit files, and recreate the entire dependency tree. While the daemon is being reloaded, all sockets systemd listens on behalf of user configuration will stay accessible.
+   systemd マネージャの設定をリロードします。全てのジェネレータが実行され (:doc:`systemd.generator.7` を参照)、全てのユニットファイルがリロードされ、全ての依存関係ツリーが再生成されます。デーモンがリロード中のときでも、systemd が listen しているソケットには全てアクセス可能です。
 
-   This command should not be confused with the reload command.
+   このコマンドは **reload** コマンドとは異なるので注意してください。
 
 .. object:: daemon-reexec
 
-   Reexecute the systemd manager. This will serialize the manager state, reexecute the process and deserialize the state again. This command is of little use except for debugging and package upgrades. Sometimes, it might be helpful as a heavy-weight daemon-reload. While the daemon is being reexecuted, all sockets systemd listening on behalf of user configuration will stay accessible.
+   systemd マネージャを再実行します。マネージャの状態をシリアライズしてから、プロセスが再実行され、それから状態がデシリアライズされます。デバッグやパッケージアップグレード以外でこのコマンドを使うことはほぼありません。場合によっては強力な **daemon-reload** として使えることもあります。デーモンが再実行中のときでも、systemd が listen しているソケットには全てアクセス可能です。
 
 システムコマンド
 ^^^^^^^^^^^^^^^^^^^
 
 .. object:: is-system-running
 
-   Checks whether the system is operational. This returns success (exit code 0) when the system is fully up and running, specifically not in startup, shutdown or maintenance mode, and with no failed services. Failure is returned otherwise (exit code non-zero). In addition, the current state is printed in a short string to standard output, see the table below. Use --quiet to suppress this output.
+   システムが動作可能な状態か確認します。システムが完全に立ち上がって動作しているときは成功 (終了コード 0) が返りますが、起動・シャットダウン中のときやメンテナンスモードの場合、あるいはサービスの起動が失敗したときは失敗 (ゼロ以外の終了コード) が返ります。さらに、現在の状態が以下の表のように標準出力に短く表示されます。出力を消したいときは **--quiet** を使ってください。
 
    .. list-table:: 表 2. is-system-running の出力
       :header-rows: 1
