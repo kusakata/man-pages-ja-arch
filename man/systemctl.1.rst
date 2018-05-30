@@ -672,41 +672,41 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. object:: default
 
-   Enter default mode. This is equivalent to systemctl isolate default.target. This operation is blocking by default, use --no-block to request asynchronous behavior.
+   デフォルトモードに入ります。**systemctl isolate default.target** と同等のコマンドです。この操作はデフォルトでブロッキングを行いますが、**--no-block** を使うことで非同期に行うことができます。
 
 .. object:: rescue
 
-   Enter rescue mode. This is equivalent to systemctl isolate rescue.target. This operation is blocking by default, use --no-block to request asynchronous behavior.
+   レスキューモードに入ります。**systemctl isolate rescue.target** と同等のコマンドです。この操作はデフォルトでブロッキングを行いますが、**--no-block** を使うことで非同期に行うことができます。
 
 .. object:: emergency
 
-   Enter emergency mode. This is equivalent to systemctl isolate emergency.target. This operation is blocking by default, use --no-block to request asynchronous behavior.
+   緊急モードに入ります。**systemctl isolate emergency.target** と同等のコマンドです。この操作はデフォルトでブロッキングを行いますが、**--no-block** を使うことで非同期に行うことができます。
 
 .. object:: halt
 
-   Shut down and halt the system. This is mostly equivalent to systemctl start halt.target --job-mode=replace-irreversibly --no-block, but also prints a wall message to all users. This command is asynchronous; it will return after the halt operation is enqueued, without waiting for it to complete. Note that this operation will simply halt the OS kernel after shutting down, leaving the hardware powered on. Use systemctl poweroff for powering off the system (see below).
+   システムをシャットダウンして停止します。**systemctl start halt.target --job-mode=replace-irreversibly --no-block** とほぼ同等のコマンドですが、ウォールメッセージは全てのユーザーに出力されます。このコマンドは非同期です。停止コマンドがキューに入るとすぐに操作が返ります。完了するまで待機することはありません。この操作ではシャットダウン後に OS カーネルを停止することだけ行い、ハードウェアは電源が入ったままの状態になるので注意してください。システムの電源を切りたいときは **systemctl poweroff** を使ってください (下を参照)。
 
-   If combined with --force, shutdown of all running services is skipped, however all processes are killed and all file systems are unmounted or mounted read-only, immediately followed by the system halt. If --force is specified twice, the operation is immediately executed without terminating any processes or unmounting any file systems. This may result in data loss. Note that when --force is specified twice the halt operation is executed by systemctl itself, and the system manager is not contacted. This means the command should succeed even when the system manager has crashed.
+   **--force** と組み合わせた場合、実行中のサービスのシャットダウンがスキップされますが、プロセスは全て終了して全てのファイルシステムがアンマウントあるいは読み取り専用でマウントされ、その後すぐにシステムが停止します。**--force** を2回指定した場合、プロセスの終了やファイルシステムのアンマウントも省いて即座に操作が実行されます。この場合はデータが喪失する可能性があります。**--force** が2回指定されたとき停止操作は **systemctl** 自身によって実行され、システムマネージャには接続されません。このため、システムマネージャがクラッシュしていてもコマンドは通ります。
 
 .. object:: poweroff
 
-   Shut down and power-off the system. This is mostly equivalent to systemctl start poweroff.target --job-mode=replace-irreversibly --no-block, but also prints a wall message to all users. This command is asynchronous; it will return after the power-off operation is enqueued, without waiting for it to complete.
+   システムをシャットダウンして電源オフにします。**systemctl start poweroff.target --job-mode=replace-irreversibly --no-block** とほぼ同等のコマンドですが、全てのユーザーにウォールメッセージが出力されます。このコマンドは非同期です。電源オフ操作がキューに入るとすぐに操作が返り、完了するまで待機することはありません。
 
-   If combined with --force, shutdown of all running services is skipped, however all processes are killed and all file systems are unmounted or mounted read-only, immediately followed by the powering off. If --force is specified twice, the operation is immediately executed without terminating any processes or unmounting any file systems. This may result in data loss. Note that when --force is specified twice the power-off operation is executed by systemctl itself, and the system manager is not contacted. This means the command should succeed even when the system manager has crashed.
+   **--force** と組み合わせた場合、実行中のサービスのシャットダウンがスキップされますが、プロセスは全て終了して全てのファイルシステムがアンマウントあるいは読み取り専用でマウントされ、その後すぐにシステムの電源を切ります。**--force** を2回指定した場合、プロセスの終了やファイルシステムのアンマウントも省いて即座に操作が実行されます。この場合はデータが喪失する可能性があります。**--force** が2回指定されたとき停止操作は **systemctl** 自身によって実行され、システムマネージャには接続されません。このため、システムマネージャがクラッシュしていてもコマンドは通ります。
 
 .. object:: reboot [arg]
 
-   Shut down and reboot the system. This is mostly equivalent to systemctl start reboot.target --job-mode=replace-irreversibly --no-block, but also prints a wall message to all users. This command is asynchronous; it will return after the reboot operation is enqueued, without waiting for it to complete.
+   システムをシャットダウンして再起動します。**systemctl start reboot.target --job-mode=replace-irreversibly --no-block** とほぼ同等のコマンドですが、全てのユーザーにウォールメッセージが出力されます。このコマンドは非同期です。再起動操作がエンキューされるとすぐに操作が返り、完了するまで待機しません。
 
-   If combined with --force, shutdown of all running services is skipped, however all processes are killed and all file systems are unmounted or mounted read-only, immediately followed by the reboot. If --force is specified twice, the operation is immediately executed without terminating any processes or unmounting any file systems. This may result in data loss. Note that when --force is specified twice the reboot operation is executed by systemctl itself, and the system manager is not contacted. This means the command should succeed even when the system manager has crashed.
+   **--force** と組み合わせた場合、実行中のサービスのシャットダウンがスキップされますが、プロセスは全て終了して全てのファイルシステムがアンマウントあるいは読み取り専用でマウントされ、その後すぐに再起動が実行されます。**--force** を2回指定した場合、プロセスの終了やファイルシステムのアンマウントも省いて即座に操作が実行されます。この場合はデータが喪失する可能性があります。**--force** が2回指定されたとき再起動操作は **systemctl** 自身によって実行され、システムマネージャには接続されません。そのため、システムマネージャがクラッシュしていてもコマンドは通ります。
 
-   If the optional argument arg is given, it will be passed as the optional argument to the reboot(2) system call. The value is architecture and firmware specific. As an example, "recovery" might be used to trigger system recovery, and "fota" might be used to trigger a “firmware over the air” update.
+   任意引数の *arg* を指定すると、:doc:`reboot.2` システムコールに任意引数として渡されます。値はアーキテクチャやファームウェアによって異なります。例えばシステムリカバリを実行するのに "recovery" と指定したり、“firmware over the air” (FOTA) アップデートを実行するのに "fota" と指定したりします。
 
 .. object:: kexec
 
-   Shut down and reboot the system via kexec. This is equivalent to systemctl start kexec.target --job-mode=replace-irreversibly --no-block. This command is asynchronous; it will return after the reboot operation is enqueued, without waiting for it to complete.
+   **kexec** でシステムをシャットダウンして再起動します。**systemctl start kexec.target --job-mode=replace-irreversibly --no-block** と同等のコマンドです。このコマンドは非同期です。再起動操作がエンキューされるとすぐに操作が返り、完了するまで待機しません。
 
-   If combined with --force, shutdown of all running services is skipped, however all processes are killed and all file systems are unmounted or mounted read-only, immediately followed by the reboot.
+   **--force** と組み合わせた場合、実行中のサービスのシャットダウンがスキップされますが、プロセスは全て終了して全てのファイルシステムがアンマウントあるいは読み取り専用でマウントされ、その後すぐに再起動が実行されます。
 
 .. object:: exit [EXIT_CODE]
 
