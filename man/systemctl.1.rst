@@ -710,88 +710,88 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. object:: exit [EXIT_CODE]
 
-   Ask the service manager to quit. This is only supported for user service managers (i.e. in conjunction with the --user option) or in containers and is equivalent to poweroff otherwise. This command is asynchronous; it will return after the exit operation is enqueued, without waiting for it to complete.
+   システムマネージャを終了します。ユーザーサービスマネージャ (**--user** オプションを使用) またはコンテナの中だけで使えるコマンドでそれ以外では **poweroff** と同じです。このコマンドは非同期です。終了操作がエンキューされるとすぐに操作が返り、完了するまで待機しません。
 
-   The service manager will exit with the specified exit code, if EXIT_CODE is passed.
+   *EXIT_CODE* が指定されると、サービスマネージャは指定された終了コードで終了します。
 
 .. object:: switch-root ROOT [INIT]
 
-   Switches to a different root directory and executes a new system manager process below it. This is intended for usage in initial RAM disks ("initrd"), and will transition from the initrd's system manager process (a.k.a. "init" process) to the main system manager process which is loaded from the actual host volume. This call takes two arguments: the directory that is to become the new root directory, and the path to the new system manager binary below it to execute as PID 1. If the latter is omitted or the empty string, a systemd binary will automatically be searched for and used as init. If the system manager path is omitted, equal to the empty string or identical to the path to the systemd binary, the state of the initrd's system manager process is passed to the main system manager, which allows later introspection of the state of the services involved in the initrd boot phase.
+   ルートディレクトリを切り替えて新しいシステムマネージャのプロセスを実行します。初期 RAM ディスク ("initrd") で使用することで initrd のシステムマネージャプロセス (別名 "init" プロセス) から実際のホストボリュームからロードされるメインのシステムマネージャプロセスに移行するのに使われます。このコマンドでは引数を2つ指定します: 新しいルートディレクトリとなるディレクトリと、PID 1 として実行する新しいシステムマネージャバイナリのパスです。後者を省略した場合や空の場合、systemd バイナリを自動的に検索して init として使用します。システムマネージャのパスを省略したとき、initrd のシステムマネージャプロセスの状態がメインのシステムマネージャに渡され、initrd ブートフェイズと関係のあるサービスの状態を後から調査することが可能になります。
 
 .. object:: suspend
 
-   Suspend the system. This will trigger activation of the special target unit suspend.target. This command is asynchronous, and will return after the suspend operation is successfully enqueued. It will not wait for the suspend/resume cycle to complete.
+   システムをサスペンドします。特殊なターゲットユニットの suspend.target がアクティベートされます。このコマンドは非同期で、サスペンド操作がキューに入るとすぐに操作が返ります。サスペンド・復帰サイクルが完了するまで待機することはありません。
 
 .. object:: hibernate
 
-   Hibernate the system. This will trigger activation of the special target unit hibernate.target. This command is asynchronous, and will return after the hibernation operation is successfully enqueued. It will not wait for the hibernate/thaw cycle to complete.
+   システムをハイバネートします。特殊なターゲットユニットの hibernate.target がアクティベートされます。このコマンドは非同期で、ハイバネート操作がキューに入るとすぐに操作が返ります。ハイバネート・雪解けサイクルが完了するまで待機することはありません。
 
 .. object:: hybrid-sleep
 
-   Hibernate and suspend the system. This will trigger activation of the special target unit hybrid-sleep.target. This command is asynchronous, and will return after the hybrid sleep operation is successfully enqueued. It will not wait for the sleep/wake-up cycle to complete.
+   システムをハイバネート・サスペンドします。特殊なターゲットユニットの hybrid-sleep.target がアクティベートされます。このコマンドは非同期で、ハイブリッドスリープ操作がキューに入るとすぐに操作が返ります。スリープ・復帰サイクルが完了するまで待機することはありません。
 
 パラメータ構文
 ^^^^^^^^^^^^^^^^
 
-   Unit commands listed above take either a single unit name (designated as UNIT), or multiple unit specifications (designated as PATTERN...). In the first case, the unit name with or without a suffix must be given. If the suffix is not specified (unit name is "abbreviated"), systemctl will append a suitable suffix, ".service" by default, and a type-specific suffix in case of commands which operate only on specific unit types. For example,
+上述のユニットコマンドはユニット名をひとつ (*UNIT* と表記) 指定したり、複数のユニット (*PATTERN...* と表記) を指定できます。前者の場合、拡張子を付けた、あるいは付けないユニット名を必ず指定する必要があります。拡張子を指定しなかった場合 (ユニット名を短縮名で指定)、systemctl は適切な拡張子を追加します。デフォルトでは ".service" が付けられます。特定のユニットタイプしか指定できないコマンドの場合はそのタイプの拡張子が付きます。例:
 
-   .. code-block:: console
+.. code-block:: console
 
-      # systemctl start sshd
+   # systemctl start sshd
 
-   and
+上記のコマンドと以下のコマンドは同じです:
 
-   .. code-block:: console
+.. code-block:: console
 
-      # systemctl start sshd.service
+   # systemctl start sshd.service
 
-   are equivalent, as are
+また、以下のコマンドと:
 
-   .. code-block:: console
+.. code-block:: console
 
-      # systemctl isolate default
+   # systemctl isolate default
 
-   and
+以下のコマンドも同じ意味になります:
 
-   .. code-block:: console
+.. code-block:: console
 
-      # systemctl isolate default.target
+   # systemctl isolate default.target
 
-   Note that (absolute) paths to device nodes are automatically converted to device unit names, and other (absolute) paths to mount unit names.
+デバイスノードの (絶対) パスは自動的にデバイスユニットの名前に、他の (絶対) パスはマウントユニットの名前に変換されます。
 
-   .. code-block:: console
+.. code-block:: console
 
-      # systemctl status /dev/sda
-      # systemctl status /home
+   # systemctl status /dev/sda
+   # systemctl status /home
 
-   are equivalent to:
+上記のコマンドは以下のコマンドと同等です:
 
-   .. code-block:: console
+.. code-block:: console
 
-      # systemctl status dev-sda.device
-      # systemctl status home.mount
+   # systemctl status dev-sda.device
+   # systemctl status home.mount
 
-   In the second case, shell-style globs will be matched against the primary names of all units currently in memory; literal unit names, with or without a suffix, will be treated as in the first case. This means that literal unit names always refer to exactly one unit, but globs may match zero units and this is not considered an error.
+後者の場合、メモリ内に存在する全てのユニットのプライマリ名に対してシェル風の glob がマッチングされます。前者の場合と同じように拡張子が付いたり付かなかったりするユニット名が使われます。つまり文字上のユニット名は常にひとつのユニットを示しますが、glob はゼロユニットにマッチする場合があり、そのときはエラーとされません。
 
-   Glob patterns use fnmatch(3), so normal shell-style globbing rules are used, and "*", "?", "[]" may be used. See glob(7) for more details. The patterns are matched against the primary names of units currently in memory, and patterns which do not match anything are silently skipped. For example:
+Glob パターンは :doc:`fnmatch.3` を使用するため、通常のシェル式 glob ルールが使われます。"*", "?", "[]" を使用できます。詳しくは :doc:`glob.7` を参照してください。パターンはメモリ内のユニットのプライマリ名に対してマッチングが行われ、マッチしないパターンはスキップされます。例:
 
-   .. code-block:: console
+.. code-block:: console
 
-      # systemctl stop sshd@*.service
+   # systemctl stop sshd@*.service
 
-   will stop all sshd@.service instances. Note that alias names of units, and units that aren't in memory are not considered for glob expansion.
+上記のコマンドは全ての sshd@.service インスタンスを停止します。ユニットのエイリアス名やメモリ内に存在しないユニットについては glob 展開の対象とならないので注意してください。
 
-   For unit file commands, the specified UNIT should be the name of the unit file (possibly abbreviated, see above), or the absolute path to the unit file:
+ユニットファイルのコマンドの場合、指定する *UNIT* はユニットファイルの名前 (拡張子は省略できます、上を参照) あるいはユニットファイルの絶対パスでなければなりません:
 
-   .. code-block:: console
+.. code-block:: console
 
-      # systemctl enable foo.service
+   # systemctl enable foo.service
 
-   or
+または:
 
-   .. code-block:: console
+.. code-block:: console
 
-      # systemctl link /path/to/foo.service
+   # systemctl link /path/to/foo.service
 
 終了ステータス
 ---------------
@@ -807,15 +807,15 @@ systemctl - systemd システム・サービスマネージャを制御する
 
 .. envvar:: $SYSTEMD_PAGER
 
-   Pager to use when --no-pager is not given; overrides $PAGER. If neither $SYSTEMD_PAGER nor $PAGER are set, a set of well-known pager implementations are tried in turn, including less(1) and more(1), until one is found. If no pager implementation is discovered no pager is invoked. Setting this environment variable to an empty string or the value "cat" is equivalent to passing --no-pager.
+   **--no-pager** が指定されなかったときに使用するページャ。*$PAGER* を上書きします。*$SYSTEMD_PAGER* と *$PAGER* のいずれも設定されていない場合、:doc:`less.1` や :doc:`more.1` など既知のページャ実装が使えないか試行されます。ページャ実装が見つからなかったときはページャは呼び出されません。この環境変数を空文字あるいは "cat" に設定すると **--no-pager** と同じになります。
 
 .. envvar:: $SYSTEMD_LESS
 
-   Override the options passed to less (by default "FRSXMK").
+   **less** に渡されるオプションを上書きします (デフォルトは "FRSXMK")。
 
 .. envvar:: $SYSTEMD_LESSCHARSET
 
-   Override the charset passed to less (by default "utf-8", if the invoking terminal is determined to be UTF-8 compatible).
+   **less** に渡される文字セットを上書きします (呼び出し元のターミナルが UTF-8 に対応している場合のデフォルトは "utf-8")。
 
 関連項目
 --------
