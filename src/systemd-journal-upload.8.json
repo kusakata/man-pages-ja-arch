@@ -1,0 +1,5 @@
+{
+    "package": "systemd",
+    "version": "238.133-1",
+    "man": "/usr/share/man/man8/systemd-journal-upload.8.gz"
+}
