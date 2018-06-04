@@ -297,7 +297,7 @@ SIGRTMIN+26, SIGRTMIN+27, SIGRTMIN+28
 カーネルコマンドライン
 -----------------------
 
-When run as system instance systemd parses a number of kernel command line arguments [#]_:
+When run as system instance systemd parses a number of kernel command line arguments [7]_:
 
 systemd.unit=, rd.systemd.unit=
    Overrides the unit to activate on boot. Defaults to default.target. This may be used to temporarily boot into a different boot unit, for example rescue.target or emergency.service. See systemd.special(7) for details about these units. The option prefixed with "rd." is honored only in the initial RAM disk (initrd), while the one that is not prefixed only in the main system.
@@ -336,12 +336,12 @@ systemd.machine_id=
    Takes a 32 character hex value to be used for setting the machine-id. Intended mostly for network booting where the same machine-id is desired for every boot.
 
 systemd.unified_cgroup_hierarchy
-   When specified without an argument or with a true argument, enables the usage of unified cgroup hierarchy [#]_ (a.k.a. cgroups-v2). When specified with a false argument, fall back to hybrid or full legacy cgroup hierarchy.
+   When specified without an argument or with a true argument, enables the usage of unified cgroup hierarchy [8]_ (a.k.a. cgroups-v2). When specified with a false argument, fall back to hybrid or full legacy cgroup hierarchy.
 
    If this option is not specified, the default behaviour is determined during compilation (the --with-default-hierarchy= option). If the kernel does not support unified cgroup hierarchy, the legacy hierarchy will be used even if this option is specified.
 
 systemd.legacy_systemd_cgroup_controller
-   Takes effect if the full unified cgroup hierarchy is not used (see previous option). When specified without an argument or with a true argument, disables the use of "hybrid" cgroup hierarchy (i.e. a cgroups-v2 tree used for systemd, and legacy cgroup hierarchy [#]_, a.k.a. cgroups-v1, for other controllers), and forces a full "legacy" mode. When specified with a false argument, enables the use of "hybrid" hierarchy.
+   Takes effect if the full unified cgroup hierarchy is not used (see previous option). When specified without an argument or with a true argument, disables the use of "hybrid" cgroup hierarchy (i.e. a cgroups-v2 tree used for systemd, and legacy cgroup hierarchy [9]_, a.k.a. cgroups-v1, for other controllers), and forces a full "legacy" mode. When specified with a false argument, enables the use of "hybrid" hierarchy.
 
    If this option is not specified, the default behaviour is determined during compilation (the --with-default-hierarchy= option). If the kernel does not support unified cgroup hierarchy, the legacy hierarchy will be used even if this option is specified.
 
@@ -380,7 +380,7 @@ For other kernel command line parameters understood by components of the core OS
 関連項目
 --------
 
-**systemd ホームページ** [#]_,
+**systemd ホームページ** [10]_,
 :doc:`systemd-system.conf.5`,
 :doc:`locale.conf.5`,
 :doc:`systemctl.1`,
