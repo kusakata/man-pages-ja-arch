@@ -48,35 +48,35 @@ SysV との互換性を保つため、systemd を **init** として呼び出し
 
 .. option:: --crash-vt=VT
 
-   Switch to a specific virtual console (VT) on crash. Takes a positive integer in the range 1–63, or a boolean argument. If an integer is passed, selects which VT to switch to. If yes, the VT kernel messages are written to is selected. If no, no VT switch is attempted. This switch has no effect when running as user instance. This setting may also be enabled during boot, on the kernel command line via the systemd.crash_vt= option, see below.
+   クラッシュ時に特定の仮想端末 (VT) に切り替えます。1-63 の範囲の正数値か論理値で指定します。正数を指定した場合、指定した VT に切り替わります。**yes** を指定した場合、カーネルメッセージが書き込まれる VT が選択されます。**no** の場合、VT の切り替えは行われません。ユーザーインスタンスとして実行している場合はこのスイッチは効果を持ちません。カーネルコマンドラインで *systemd.crash_vt=* オプションを使うことで起動時に設定を有効にすることもできます。下を参照。
 
 .. option:: --crash-shell
 
-   Run a shell on crash. This switch has no effect when running as user instance. This setting may also be enabled during boot, on the kernel command line via the systemd.crash_shell= option, see below.
+   クラッシュ時にシェルを起動します。ユーザーインスタンスとして実行している場合はこのスイッチは効果を持ちません。カーネルコマンドラインで *systemd.crash_shell=* オプションを使うことで起動時に設定を有効にすることもできます。下を参照。
 
 .. option:: --crash-reboot
 
-   Automatically reboot the system on crash. This switch has no effect when running as user instance. This setting may also be enabled during boot, on the kernel command line via the systemd.crash_reboot= option, see below.
+   クラッシュ時にシステムを自動的に再起動します。ユーザーインスタンスとして実行している場合はこのスイッチは効果を持ちません。カーネルコマンドラインで *systemd.crash_reboot=* オプションを使うことで起動時に設定を有効にすることもできます。下を参照。
 
 .. option:: --confirm-spawn
 
-   Ask for confirmation when spawning processes. This switch has no effect when run as user instance.
+   プロセスを生成するときに確認を要求します。ユーザーインスタンスとして実行している場合はこのスイッチは効果を持ちません。
 
 .. option:: --show-status=
 
-   Takes a boolean argument or the special value auto. If on, terse unit status information is shown on the console during boot-up and shutdown. If off, no such status information is shown. If set to auto behavior is similar to off, except that it is automatically switched to on, as soon as the first unit failure or significant boot delay is encountered. This switch has no effect when invoked as user instance. If specified, overrides both the kernel command line setting systemd.show_status= (see below) and the configuration file option ShowStatus=, see systemd-system.conf(5).
+   論理引数あたいは特殊値 **auto** を指定します。on の場合、起動時・シャットダウン時にコンソールにユニットの状態情報が簡潔に表示されます。off の場合、状態情報は表示されません。**auto** に設定した場合の挙動は off と似ていますが、ユニットの実行が失敗したり起動に時間がかかっている場合などに自動的に on に切り替わります。ユーザーインスタンスとして実行している場合はこのスイッチは効果を持ちません。指定した場合、カーネルコマンドラインの systemd.show_status= 設定 (下を参照) と設定ファイルのオプション **ShowStatus=** が上書きされます。:doc:`systemd-system.conf.5` を参照。
 
 .. option:: --log-target=
 
-   Set log target. Argument must be one of console, journal, kmsg, journal-or-kmsg, null.
+   ログターゲットを設定します。引数は **console**, **journal**, **kmsg**, **journal-or-kmsg**, **null** のどれかである必要があります。
 
 .. option:: --log-level=
 
-   Set log level. As argument this accepts a numerical log level or the well-known syslog(3) symbolic names (lowercase): emerg, alert, crit, err, warning, notice, info, debug.
+   ログレベルを設定します。数字のログレベルあるいは :doc:`syslog.3` のシンボル名 (小文字) を引数として指定できます: **emerg**, **alert**, **crit**, **err**, **warning**, **notice**, **info**, **debug**。
 
 .. option:: --log-color=
 
-   Highlight important log messages. Argument is a boolean value. If the argument is omitted, it defaults to true.
+   重要なログメッセージをハイライト表示します。引数は論理値です。引数を省略した場合、デフォルトでは **true** になります。
 
 .. option:: --log-location=
 
