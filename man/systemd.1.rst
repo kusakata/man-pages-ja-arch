@@ -80,35 +80,36 @@ SysV との互換性を保つため、systemd を **init** として呼び出し
 
 .. option:: --log-location=
 
-   Include code location in log messages. This is mostly relevant for debugging purposes. Argument is a boolean value. If the argument is omitted it defaults to true.
+   ログメッセージにコードの位置を含めます。主としてデバッグ用のオプションです。引数は論理値です。引数を省略した場合はデフォルトで **true** となります。
 
 .. option:: --default-standard-output=, --default-standard-error=
 
-   Sets the default output or error output for all services and sockets, respectively. That is, controls the default for StandardOutput= and StandardError= (see systemd.exec(5) for details). Takes one of inherit, null, tty, journal, journal+console, syslog, syslog+console, kmsg, kmsg+console. If the argument is omitted --default-standard-output= defaults to journal and --default-standard-error= to inherit.
+   全てのサービスとソケットについてデフォルト出力・エラー出力を設定します。**StandardOutput=** と **StandardError=** のデフォルトを制御します (詳しくは :doc:`systemd.exec.5` を参照)。**inherit**, **null**, **tty**, **journal**, **journal+console**, **syslog**, **syslog+console**, **kmsg**, **kmsg+console** のどれかで指定します。引数を省略した場合は **--default-standard-output=** のデフォルトは **journal** に、**--default-standard-error=** のデフォルトは **inherit** になります。
 
 .. option:: --machine-id=
 
-   Override the machine-id set on the hard drive, useful for network booting or for containers. May not be set to all zeros.
+   ハードドライブに設定された machine-id を上書きします。ネットワークブートやコンテナで役に立つオプションです。全てをゼロに設定することはできません。
 
 .. option:: --service-watchdogs=
 
-   Globally enable/disable all service watchdog timeouts and emergency actions. This setting may also be specified during boot, on the kernel command line via the systemd.service_watchdogs= option, see below. Defaults to enabled.
+   全てのサービスのウォッチドッグタイムアウトと緊急アクションをグローバルに有効化・無効化します。この設定は起動時にカーネルコマンドラインで *systemd.service_watchdogs=* オプションを使って指定することも可能です。下を参照。デフォルトは enabled です。
 
 .. option:: -h, --help
 
-   Print a short help text and exit.
+   短いヘルプテキストを出力して終了します。
 
 .. option:: --version
 
-   Print a short version string and exit.
+   短いバージョン文字列を出力して終了します。
 
 概念
 -----------
 
-systemd provides a dependency system between various entities called "units" of 11 different types. Units encapsulate various objects that are relevant for system boot-up and maintenance. The majority of units are configured in unit configuration files, whose syntax and basic set of options is described in systemd.unit(5), however some are created automatically from other configuration, dynamically from system state or programmatically at runtime. Units may be "active" (meaning started, bound, plugged in, ..., depending on the unit type, see below), or "inactive" (meaning stopped, unbound, unplugged, ...), as well as in the process of being activated or deactivated, i.e. between the two states (these states are called "activating", "deactivating"). A special "failed" state is available as well, which is very similar to "inactive" and is entered when the service failed in some way (process returned error code on exit, or crashed, an operation timed out, or after too many restarts). If this state is entered, the cause will be logged, for later reference. Note that the various unit types may have a number of additional substates, which are mapped to the five generalized unit states described here.
-The following unit types are available:
+systemd は11の異なるタイプの「ユニット」と呼ばれるエンティティ間の依存システムを提供します。ユニットではシステムの起動やメンテナンスに関連する様々なオブジェクトがカプセル化されています。ユニットの多くはユニット設定ファイルで設定を行います。設定構文や基本的なオプションについては :doc:`systemd.unit.5` で説明していますが、他の設定から自動的に作成されたり、システムの状態や実行時にプログラムに従って動的に生成されるユニットも存在します。ユニットには "active" 状態 (起動済み・バインド済み・接続済みなどユニットのタイプによって意味は変わります、下を参照) と "inactive" 状態 (停止済み・バインド解除・未接続...) があり、さらにそのふたつの状態に遷移する途中の中間状態が存在します ("activating" または "deactivating" と呼ばれます)。また、特殊な "failed" 状態も存在します。"failed" は "inactive" とよく似ており、何らかの理由でサービスの実行が失敗した場合 (プロセスがエラーコードで終了した、クラッシュした、操作がタイムアウトした、何度も再起動が発生している、など) に遷移します。この状態になったときは、後で確認できるように原因がログに保存されます。ユニットタイプによってはさらに他の状態が存在する場合があり、上記の一般的な5つのユニット状態にマッピングされます。
 
-   1. Service units, which start and control daemons and the processes they consist of. For details, see systemd.service(5).
+ユニットタイプは以下が存在します:
+
+   1. サービスユニット。サービスを構成するデーモンやプロセスを起動・制御します。詳しくは :doc:`systemd.service.5` を参照。
 
    2. Socket units, which encapsulate local IPC or network sockets in the system, useful for socket-based activation. For details about socket units, see systemd.socket(5), for details on socket-based activation and other forms of activation, see daemon(7).
 
@@ -157,16 +158,16 @@ Systems which invoke systemd in a container or initrd environment should impleme
 ディレクトリ
 -------------
 
-System unit directories
+システムユニットディレクトリ
    The systemd system manager reads unit configuration from various directories. Packages that want to install unit files shall place them in the directory returned by pkg-config systemd --variable=systemdsystemunitdir. Other directories checked are /usr/local/lib/systemd/system and /usr/lib/systemd/system. User configuration always takes precedence. pkg-config systemd --variable=systemdsystemconfdir returns the path of the system configuration directory. Packages should alter the content of these directories only with the enable and disable commands of the systemctl(1) tool. Full list of directories is provided in systemd.unit(5).
 
-User unit directories
+ユーザーユニットディレクトリ
    Similar rules apply for the user unit directories. However, here the XDG Base Directory specification [6]_ is followed to find units. Applications should place their unit files in the directory returned by pkg-config systemd --variable=systemduserunitdir. Global configuration is done in the directory reported by pkg-config systemd --variable=systemduserconfdir. The enable and disable commands of the systemctl(1) tool can handle both global (i.e. for all users) and private (for one user) enabling/disabling of units. Full list of directories is provided in systemd.unit(5).
 
-SysV init scripts directory
+SysV init スクリプトディレクトリ
    The location of the SysV init script directory varies between distributions. If systemd cannot find a native unit file for a requested service, it will look for a SysV init script of the same name (with the .service suffix removed).
 
-SysV runlevel link farm directory
+SysV ランレベルリンクファームディレクトリ
    The location of the SysV runlevel link farm directory varies between distributions. systemd will take the link farm into account when figuring out whether a service shall be enabled. Note that a service unit with a native unit configuration file cannot be started by activating it in the SysV runlevel link farm.
 
 シグナル
