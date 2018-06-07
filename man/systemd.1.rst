@@ -111,25 +111,25 @@ systemd は11の異なるタイプの「ユニット」と呼ばれるエンテ�
 
    1. サービスユニット。サービスを構成するデーモンやプロセスを起動・制御します。詳しくは :doc:`systemd.service.5` を参照。
 
-   2. Socket units, which encapsulate local IPC or network sockets in the system, useful for socket-based activation. For details about socket units, see systemd.socket(5), for details on socket-based activation and other forms of activation, see daemon(7).
+   2. ソケットユニット。システムのローカル IPC やネットワークソケットソケットをカプセル化して、ソケットベースのアクティベーションを可能にします。ソケットユニットについて詳しくは :doc:`systemd.socket.5` を参照してください。ソケットベースのアクティベーションなどアクティベーションについての詳しい情報は :doc:`daemon.7` を見てください。
 
-   3. Target units are useful to group units, or provide well-known synchronization points during boot-up, see systemd.target(5).
+   3. ターゲットユニット。ユニットをグループ化したり、起動時の同期ポイントを提供します。:doc:`systemd.target.5` を参照。
 
-   4. Device units expose kernel devices in systemd and may be used to implement device-based activation. For details, see systemd.device(5).
+   4. デバイスユニット。カーネルデバイスを systemd から扱えるようにしてデバイスベースのアクティベーションを実装します。詳しくは :doc:`systemd.device.5` を参照。
 
-   5. Mount units control mount points in the file system, for details see systemd.mount(5).
+   5. マウントユニット。ファイルシステムのマウントポイントを制御します。詳しくは :doc:`systemd.mount.5` を参照。
 
-   6. Automount units provide automount capabilities, for on-demand mounting of file systems as well as parallelized boot-up. See systemd.automount(5).
+   6. 自動マウントユニット。ファイルシステムを必要に応じてマウントしたりブートを並列化するための自動マウント機能を提供します。:doc:`systemd.automount.5` を参照。
 
-   7. Timer units are useful for triggering activation of other units based on timers. You may find details in systemd.timer(5).
+   7. タイマーユニット。タイマーに基づいて他のユニットをアクティベートします。詳細は :doc:`systemd.timer.5` に書かれています。
 
-   8. Swap units are very similar to mount units and encapsulate memory swap partitions or files of the operating system. They are described in systemd.swap(5).
+   8. スワップユニット。マウントユニットとよく似ており、オペレーティングシステムのメモリスワップパーティションやスワップファイルをカプセル化します。:doc:`systemd.swap.5` で解説しています。
 
-   9. Path units may be used to activate other services when file system objects change or are modified. See systemd.path(5).
+   9. パスユニット。ファイルシステムオブジェクトが変更されたときに他のサービスをアクティベートするのに使います。:doc:`systemd.path.5` を見てください。
 
-   10. Slice units may be used to group units which manage system processes (such as service and scope units) in a hierarchical tree for resource management purposes. See systemd.slice(5).
+   10. スライスユニット。システムプロセスを管理するユニット (サービスユニットやスコープユニットなど) を階層ツリーでグループ化してリソース管理するために使用します。:doc:`systemd.slice.5` を見てください。
 
-   11. Scope units are similar to service units, but manage foreign processes instead of starting them as well. See systemd.scope(5).
+   11. スコープユニット。サービスユニットと似ていますが、プロセスを起動するのではなく外部プロセスを管理します。:doc:`systemd.scope.5` を見てください。
 
 Units are named as their configuration files. Some units have special semantics. A detailed list is available in systemd.special(7).
 
