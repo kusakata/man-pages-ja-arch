@@ -1,0 +1,5 @@
+{
+    "package": "systemd",
+    "version": "238.133-1",
+    "man": "/usr/share/man/man1/systemd-delta.1.gz"
+}
