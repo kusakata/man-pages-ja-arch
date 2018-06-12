@@ -139,21 +139,21 @@ systemd は様々な依存関係を扱うことができ、正負の必要依存
 
 起動時に systemd は default.target ターゲットユニットをアクティベートしてジョブによって起動サービスがアクティベートされたり、依存関係によって他の起動ユニットがアクティベートされます。通常、ユニット名は graphical.target (UI を立ち上げるフル機能の起動) あるいは multi-user.target (組み込み・サーバー環境で使用するコンソールのみの起動、graphical.target のサブセット) のエイリアス (シンボリックリンク) となります。ただし、管理者の裁量で他のターゲットユニットのエイリアスとして設定することもできます。ターゲットユニットについて詳しくは :doc:`systemd.special.7` を参照してください。
 
-Processes systemd spawns are placed in individual Linux control groups named after the unit which they belong to in the private systemd hierarchy. (see cgroups.txt [#]_ for more information about control groups, or short "cgroups"). systemd uses this to effectively keep track of processes. Control group information is maintained in the kernel, and is accessible via the file system hierarchy (beneath /sys/fs/cgroup/systemd/), or in tools such as systemd-cgls(1) or ps(1) ( ps xawf -eo pid,user,cgroup,args is particularly useful to list all processes and the systemd units they belong to.).
+systemd が生成したプロセスはプレイベートな systemd 階層にあるプロセスが属するユニットの名前が付いた個別の Linux コントロールグループに配置されます (コントロールグループ "cgroups" について詳しくは **cgroups.txt** [#]_ を参照してください)。systemd はコントロールグループを使って効率的にプロセスを追跡します。コントロールグループの情報はカーネル内で管理され、ファイルシステム階層 (/sys/fs/cgroup/systemd/) からアクセスできます。また、:doc:`systemd-cgls.1` や :doc:`ps.1` などのツールを使う方法もあります (**ps xawf -eo pid,user,cgroup,args** で全てのプロセスとプロセスが属する systemd ユニットを一覧表示することができます)。
 
-systemd is compatible with the SysV init system to a large degree: SysV init scripts are supported and simply read as an alternative (though limited) configuration file format. The SysV /dev/initctl interface is provided, and compatibility implementations of the various SysV client tools are available. In addition to that, various established Unix functionality such as /etc/fstab or the utmp database are supported.
+systemd は SysV init システムと大部分で互換性を保っています: SysV init スクリプトはサポートされており、もうひとつの設定ファイルフォーマットとして読み込まれます (ただし制限があります)。SysV の /dev/initctl インターフェイスも提供され、様々な SysV クライアントツールの互換実装が存在します。加えて、/etc/fstab や utmp データベースなどの既存の Unix 機能に対応しています。
 
-systemd has a minimal transaction system: if a unit is requested to start up or shut down it will add it and all its dependencies to a temporary transaction. Then, it will verify if the transaction is consistent (i.e. whether the ordering of all units is cycle-free). If it is not, systemd will try to fix it up, and removes non-essential jobs from the transaction that might remove the loop. Also, systemd tries to suppress non-essential jobs in the transaction that would stop a running service. Finally it is checked whether the jobs of the transaction contradict jobs that have already been queued, and optionally the transaction is aborted then. If all worked out and the transaction is consistent and minimized in its impact it is merged with all already outstanding jobs and added to the run queue. Effectively this means that before executing a requested operation, systemd will verify that it makes sense, fixing it if possible, and only failing if it really cannot work.
+systemd はミニマルなトランザクションシステムを備えています: ユニットの起動やシャットダウンが要求されると、ユニットとその依存ユニットは一時的なトランザクションに追加されます。そして、トランザクションの整合性 (全てのユニットの順序が循環していないかどうか) が確認されます。循環が見つかった場合、systemd は解決を試みて、ループを抜けるために不必要なジョブをトランザクションから削除します。また、systemd は実行中のサービスを停止するようなトランザクションの重要でないジョブを抑圧できないか試行します。最後にトランザクションのジョブが既にキューに入っているジョブと相反しないかチェックされ、任意でトランザクションが停止されます。全てのチェックが問題なく通過してトランザクションの整合性が保たれ影響を最小限に抑えることができてから、既存のジョブとマージされて実行キューに追加されます。要求された操作を実行する前に、systemd は操作が正しいか確認して、可能であれば修正を行って、上手く行かない場合にのみ失敗します。
 
-systemd contains native implementations of various tasks that need to be executed as part of the boot process. For example, it sets the hostname or configures the loopback network device. It also sets up and mounts various API file systems, such as /sys or /proc.
+systemd はブートプロセスの一部として実行する必要がある様々なタスクをネイティブで実装しています。例えば、systemd はホストネームを設定したりループバックネットワークデバイスの設定を行います。/sys や /proc など様々な API ファイルシステムの設定とマウントも行います。
 
-For more information about the concepts and ideas behind systemd, please refer to the Original Design Document [#]_.
+systemd の背景にある概念や構想について詳しくはオリジナルの設計ドキュメント [#]_ を参照してください。
 
-Note that some but not all interfaces provided by systemd are covered by the Interface Stability Promise [#]_.
+また、systemd によって提供されているインターフェイスの一部は Interface Stability Promise [#]_ に記載されています。
 
-Units may be generated dynamically at boot and system manager reload time, for example based on other configuration files or parameters passed on the kernel command line. For details, see systemd.generator(7).
+ユニットは起動時やシステムマネージャのリロード時に動的に生成されることがあります。例えば他の設定ファイルやカーネルコマンドラインに渡されたパラメータによって生成される場合があります。詳しくは :doc:`systemd.generator.7` を参照。
 
-Systems which invoke systemd in a container or initrd environment should implement the Container Interface [#]_ or initrd Interface [#]_ specifications, respectively.
+コンテナや initrd 環境で systemd を呼び出すシステムは Container Interface [#]_ あるいは initrd Interface [#]_ 仕様を実装する必要があります。
 
 ディレクトリ
 -------------
