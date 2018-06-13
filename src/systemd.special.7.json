@@ -1,0 +1,5 @@
+{
+    "package": "systemd",
+    "version": "238.133-2",
+    "man": "/usr/share/man/man7/systemd.special.7.gz"
+}

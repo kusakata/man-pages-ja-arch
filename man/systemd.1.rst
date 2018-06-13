@@ -139,7 +139,7 @@ systemd は様々な依存関係を扱うことができ、正負の必要依存
 
 起動時に systemd は default.target ターゲットユニットをアクティベートしてジョブによって起動サービスがアクティベートされたり、依存関係によって他の起動ユニットがアクティベートされます。通常、ユニット名は graphical.target (UI を立ち上げるフル機能の起動) あるいは multi-user.target (組み込み・サーバー環境で使用するコンソールのみの起動、graphical.target のサブセット) のエイリアス (シンボリックリンク) となります。ただし、管理者の裁量で他のターゲットユニットのエイリアスとして設定することもできます。ターゲットユニットについて詳しくは :doc:`systemd.special.7` を参照してください。
 
-systemd が生成したプロセスはプレイベートな systemd 階層にあるプロセスが属するユニットの名前が付いた個別の Linux コントロールグループに配置されます (コントロールグループ "cgroups" について詳しくは **cgroups.txt** [#]_ を参照してください)。systemd はコントロールグループを使って効率的にプロセスを追跡します。コントロールグループの情報はカーネル内で管理され、ファイルシステム階層 (/sys/fs/cgroup/systemd/) からアクセスできます。また、:doc:`systemd-cgls.1` や :doc:`ps.1` などのツールを使う方法もあります (**ps xawf -eo pid,user,cgroup,args** で全てのプロセスとプロセスが属する systemd ユニットを一覧表示することができます)。
+systemd が生成したプロセスはプレイベートな systemd 階層にあるプロセスが属するユニットの名前が付いた個別の Linux コントロールグループに配置されます (コントロールグループ "cgroups" について詳しくは **cgroups.txt** [1]_ を参照してください)。systemd はコントロールグループを使って効率的にプロセスを追跡します。コントロールグループの情報はカーネル内で管理され、ファイルシステム階層 (/sys/fs/cgroup/systemd/) からアクセスできます。また、:doc:`systemd-cgls.1` や :doc:`ps.1` などのツールを使う方法もあります (**ps xawf -eo pid,user,cgroup,args** で全てのプロセスとプロセスが属する systemd ユニットを一覧表示することができます)。
 
 systemd は SysV init システムと大部分で互換性を保っています: SysV init スクリプトはサポートされており、もうひとつの設定ファイルフォーマットとして読み込まれます (ただし制限があります)。SysV の /dev/initctl インターフェイスも提供され、様々な SysV クライアントツールの互換実装が存在します。加えて、/etc/fstab や utmp データベースなどの既存の Unix 機能に対応しています。
 
@@ -147,13 +147,13 @@ systemd はミニマルなトランザクションシステムを備えていま
 
 systemd はブートプロセスの一部として実行する必要がある様々なタスクをネイティブで実装しています。例えば、systemd はホストネームを設定したりループバックネットワークデバイスの設定を行います。/sys や /proc など様々な API ファイルシステムの設定とマウントも行います。
 
-systemd の背景にある概念や構想について詳しくはオリジナルの設計ドキュメント [#]_ を参照してください。
+systemd の背景にある概念や構想について詳しくはオリジナルの設計ドキュメント [2]_ を参照してください。
 
-また、systemd によって提供されているインターフェイスの一部は Interface Stability Promise [#]_ に記載されています。
+また、systemd によって提供されているインターフェイスの一部は Interface Stability Promise [3]_ に記載されています。
 
 ユニットは起動時やシステムマネージャのリロード時に動的に生成されることがあります。例えば他の設定ファイルやカーネルコマンドラインに渡されたパラメータによって生成される場合があります。詳しくは :doc:`systemd.generator.7` を参照。
 
-コンテナや initrd 環境で systemd を呼び出すシステムは Container Interface [#]_ あるいは initrd Interface [#]_ 仕様を実装する必要があります。
+コンテナや initrd 環境で systemd を呼び出すシステムは Container Interface [4]_ あるいは initrd Interface [5]_ 仕様を実装する必要があります。
 
 ディレクトリ
 -------------
@@ -390,7 +390,7 @@ For other kernel command line parameters understood by components of the core OS
 :doc:`daemon.7`,
 :doc:`sd-daemon.3`,
 :doc:`systemd.unit.5`,
-:doc:`systemd.special.5`,
+:doc:`systemd.special.7`,
 :doc:`pkg-config.1`,
 :doc:`kernel-command-line.7`,
 :doc:`bootup.7`,
@@ -399,13 +399,13 @@ For other kernel command line parameters understood by components of the core OS
 注釈
 -------
 
-.. [#] https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt
-.. [#] http://0pointer.de/blog/projects/systemd.html
-.. [#] https://www.freedesktop.org/wiki/Software/systemd/InterfaceStabilityPromise
-.. [#] https://www.freedesktop.org/wiki/Software/systemd/ContainerInterface
-.. [#] https://www.freedesktop.org/wiki/Software/systemd/InitrdInterface
-.. [#] http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
-.. [#] If run inside a Linux container these arguments may be passed as command line arguments to systemd itself, next to any of the command line options listed in the Options section above. If run outside of Linux containers, these arguments are parsed from /proc/cmdline instead.
-.. [#] https://www.kernel.org/doc/Documentation/cgroup-v2.txt
-.. [#] https://www.kernel.org/doc/Documentation/cgroup-v1/
-.. [#] https://www.freedesktop.org/wiki/Software/systemd/
+.. [1] https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt
+.. [2] http://0pointer.de/blog/projects/systemd.html
+.. [3] https://www.freedesktop.org/wiki/Software/systemd/InterfaceStabilityPromise
+.. [4] https://www.freedesktop.org/wiki/Software/systemd/ContainerInterface
+.. [5] https://www.freedesktop.org/wiki/Software/systemd/InitrdInterface
+.. [6] http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+.. [7] If run inside a Linux container these arguments may be passed as command line arguments to systemd itself, next to any of the command line options listed in the Options section above. If run outside of Linux containers, these arguments are parsed from /proc/cmdline instead.
+.. [8] https://www.kernel.org/doc/Documentation/cgroup-v2.txt
+.. [9] https://www.kernel.org/doc/Documentation/cgroup-v1/
+.. [10] https://www.freedesktop.org/wiki/Software/systemd/
