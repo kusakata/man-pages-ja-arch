@@ -159,16 +159,16 @@ systemd の背景にある概念や構想について詳しくはオリジナル
 -------------
 
 システムユニットディレクトリ
-   The systemd system manager reads unit configuration from various directories. Packages that want to install unit files shall place them in the directory returned by pkg-config systemd --variable=systemdsystemunitdir. Other directories checked are /usr/local/lib/systemd/system and /usr/lib/systemd/system. User configuration always takes precedence. pkg-config systemd --variable=systemdsystemconfdir returns the path of the system configuration directory. Packages should alter the content of these directories only with the enable and disable commands of the systemctl(1) tool. Full list of directories is provided in systemd.unit(5).
+   systemd システムマネージャは様々なディレクトリからユニットの設定を読み込みます。ユニットファイルをインストールするパッケージは **pkg-config systemd --variable=systemdsystemunitdir** で返ってきたディレクトリにユニットファイルを配置してください。他にチェックされるディレクトリは /usr/local/lib/systemd/system と /usr/lib/systemd/system です。ユーザー設定は常に優先されます。**pkg-config systemd --variable=systemdsystemconfdir** でシステムの設定ディレクトリのパスが返ります。これらのディレクトリは :doc:`systemctl.1` ツールの **enable** と **disable** コマンド以外でパッケージが中身を変更しないようにしてください。ディレクトリの完全な一覧は :doc:`systemd.unit.5` で列挙しています。
 
 ユーザーユニットディレクトリ
-   Similar rules apply for the user unit directories. However, here the XDG Base Directory specification [6]_ is followed to find units. Applications should place their unit files in the directory returned by pkg-config systemd --variable=systemduserunitdir. Global configuration is done in the directory reported by pkg-config systemd --variable=systemduserconfdir. The enable and disable commands of the systemctl(1) tool can handle both global (i.e. for all users) and private (for one user) enabling/disabling of units. Full list of directories is provided in systemd.unit(5).
+   同じルールはユーザーユニットのディレクトリにも適用されます。ただし、XDG Base Directory 仕様 [6]_ に従ってユニットが検索されます。アプリケーションは **pkg-config systemd --variable=systemduserunitdir** によって返されるディレクトリにユニットファイルを配置してください。グローバルな設定は **pkg-config systemd --variable=systemduserconfdir** で返されるディレクトリを使います。:doc:`systemctl.1` ツールの **enable** と **disable** コマンドはグローバル (全ユーザー共通) およびプライベート (特定のユーザーのみ) 両方のユニットの有効化と無効化を処理します。ディレクトリの完全なリストは :doc:`systemd.unit.5` を参照。
 
 SysV init スクリプトディレクトリ
-   The location of the SysV init script directory varies between distributions. If systemd cannot find a native unit file for a requested service, it will look for a SysV init script of the same name (with the .service suffix removed).
+   SysV init スクリプトのディレクトリパスはディストリビューションによって変わります。systemd が要求されたサービスのネイティブユニットファイルを見つけられなかった場合、同じ名前の (.service 拡張子を取り除いた) SysV init スクリプトが検索されます。
 
 SysV ランレベルリンクファームディレクトリ
-   The location of the SysV runlevel link farm directory varies between distributions. systemd will take the link farm into account when figuring out whether a service shall be enabled. Note that a service unit with a native unit configuration file cannot be started by activating it in the SysV runlevel link farm.
+   SysV ランレベルリンクファームディレクトリのパスはディストリビューションによって異なります。systemd はサービスを有効化するかどうか計算するときにリンクファームを考慮します。SysV ランレベルリンクファームを有効化した場合、ネイティブユニット設定ファイルがあるサービスユニットは起動できないので注意してください。
 
 シグナル
 ----------
