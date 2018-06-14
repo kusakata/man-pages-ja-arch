@@ -174,64 +174,64 @@ SysV ランレベルリンクファームディレクトリ
 ----------
 
 SIGTERM
-   Upon receiving this signal the systemd system manager serializes its state, reexecutes itself and deserializes the saved state again. This is mostly equivalent to systemctl daemon-reexec.
+   このシグナルを受信すると systemd システムマネージャは状態をシリアライズして、自分自身を再実行してから保存した状態をデシリアライズします。**systemctl daemon-reexec** とほとんど同じです。
 
-   systemd user managers will start the exit.target unit when this signal is received. This is mostly equivalent to systemctl --user start exit.target --job-mode=replace-irreversible.
+   systemd ユーザーマネージャはこのシグナルを受信すると exit.target ユニットを起動します。**systemctl --user start exit.target --job-mode=replace-irreversible** とほとんど同じです。
 
 SIGINT
-   Upon receiving this signal the systemd system manager will start the ctrl-alt-del.target unit. This is mostly equivalent to systemctl start ctrl-alt-del.target --job-mode=replace-irreversible. If this signal is received more than 7 times per 2s, an immediate reboot is triggered. Note that pressing Ctrl-Alt-Del on the console will trigger this signal. Hence, if a reboot is hanging, pressing Ctrl-Alt-Del more than 7 times in 2s is a relatively safe way to trigger an immediate reboot.
+   このシグナルを受信すると systemd システムマネージャは ctrl-alt-del.target ユニットを起動します。**systemctl start ctrl-alt-del.target --job-mode=replace-irreversible** とほとんど同じです。このシグナルを2秒間に7回以上受け取った場合、即座に再起動が行われます。コンソールで Ctrl-Alt-Del を押すとこのシグナルが発火します。したがって、再起動中にフリーズした場合、Ctrl-Alt-Del を2秒間に7回以上押すことで比較的安全に強制再起動ができます。
 
-   systemd user managers treat this signal the same way as SIGTERM.
+   systemd ユーザーマネージャはこのシグナルを SIGTERM と同じように扱います。
 
 SIGWINCH
-   When this signal is received the systemd system manager will start the kbrequest.target unit. This is mostly equivalent to systemctl start kbrequest.target.
+   このシグナルを受信すると systemd システムマネージャは kbrequest.target ユニットを起動します。**systemctl start kbrequest.target** とほとんど同じです。
 
-   This signal is ignored by systemd user managers.
+   systemd ユーザーマネージャはこのシグナルを無視します。
 
 SIGPWR
-   When this signal is received the systemd manager will start the sigpwr.target unit. This is mostly equivalent to systemctl start sigpwr.target.
+   このシグナルを受信すると systemd システムマネージャは sigpwr.target ユニットを起動します。**systemctl start sigpwr.target** とほとんど同じです。
 
 SIGUSR1
-   When this signal is received the systemd manager will try to reconnect to the D-Bus bus.
+   このシグナルを受信すると systemd システムマネージャは D-Bus バスに再接続を試行します。
 
 SIGUSR2
-   When this signal is received the systemd manager will log its complete state in human-readable form. The data logged is the same as printed by systemd-analyze dump.
+   このシグナルを受信すると systemd システムマネージャは人間が読める形式で全ての状態をログに出力します。ログに保存されるデータは **systemd-analyze dump** と同じになります。
 
 SIGHUP
-   Reloads the complete daemon configuration. This is mostly equivalent to systemctl daemon-reload.
+   デーモンの設定を完全にリロードします。**systemctl daemon-reload** とほとんど同じです。
 
 SIGRTMIN+0
-   Enters default mode, starts the default.target unit. This is mostly equivalent to systemctl isolate default.target.
+   デフォルトモードに入って、default.target ユニットを起動します。**systemctl isolate default.target** とほとんど同じです。
 
 SIGRTMIN+1
-   Enters rescue mode, starts the rescue.target unit. This is mostly equivalent to systemctl isolate rescue.target.
+   レスキューモードに入って、rescue.targe ユニットを起動します。**systemctl isolate rescue.target** とほとんど同じです。
 
 SIGRTMIN+2
-   Enters emergency mode, starts the emergency.service unit. This is mostly equivalent to systemctl isolate emergency.service.
+   緊急モードに入って、emergency.service ユニットを起動します。**systemctl isolate emergency.service** とほとんど同じです。
 
 SIGRTMIN+3
-   Halts the machine, starts the halt.target unit. This is mostly equivalent to systemctl start halt.target --job-mode=replace-irreversible.
+   マシンを停止して、halt.target ユニットを起動します。**systemctl start halt.target --job-mode=replace-irreversible** とほとんど同じです。
 
 SIGRTMIN+4
-   Powers off the machine, starts the poweroff.target unit. This is mostly equivalent to systemctl start poweroff.target --job-mode=replace-irreversible.
+   マシンの電源を切って、poweroff.target ユニットを起動します。**systemctl start poweroff.target --job-mode=replace-irreversible** とほとんど同じです。
 
 SIGRTMIN+5
-   Reboots the machine, starts the reboot.target unit. This is mostly equivalent to systemctl start reboot.target --job-mode=replace-irreversible.
+   マシンを再起動して、reboot.target ユニットを起動します。**systemctl start reboot.target --job-mode=replace-irreversible** とほとんど同じです。
 
 SIGRTMIN+6
-   Reboots the machine via kexec, starts the kexec.target unit. This is mostly equivalent to systemctl start kexec.target --job-mode=replace-irreversible.
+   kexec でマシンを再起動して kexec.target ユニットを起動します。**systemctl start kexec.target --job-mode=replace-irreversible** とほとんど同じです。
 
 SIGRTMIN+13
-   Immediately halts the machine.
+   即座にマシンを停止します。
 
 SIGRTMIN+14
-   Immediately powers off the machine.
+   即座にマシンの電源を切ります。
 
 SIGRTMIN+15
-   Immediately reboots the machine.
+   即座にマシンを再起動します。
 
 SIGRTMIN+16
-   Immediately reboots the machine with kexec.
+   即座に kexec でマシンを再起動します。
 
 SIGRTMIN+20
    Enables display of status messages on the console, as controlled via systemd.show_status=1 on the kernel command line.
