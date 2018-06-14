@@ -83,21 +83,21 @@ hybrid-sleep.target
    システムを同時にハイバネート・サスペンドするための特殊なユニット。sleep.target を引き寄せます。
 
 halt.target
-   A special target unit for shutting down and halting the system. Note that this target is distinct from poweroff.target in that it generally really just halts the system rather than powering it down.
+   システムをシャットダウン・停止するための特殊なターゲットユニット。このターゲットとは poweroff.target とは違ってシステムの停止だけを行い電源は切りません。
 
-   Applications wanting to halt the system should not start this unit directly, but should instead execute systemctl halt (possibly with the --no-block option) or call systemd(1)'s org.freedesktop.systemd1.Manager.Halt D-Bus method directly.
+   システムを停止したいアプリケーションからこのユニットを直接起動してはいけません。代わりに **systemctl halt** を実行 (任意で --no-block オプションを付ける) するか :doc:`systemd.1` の **org.freedesktop.systemd1.Manager.Halt** D-Bus メソッドを直接呼び出してください。
 
 init.scope
-   This scope unit is where the system and service manager (PID 1) itself resides. It is active as long as the system is running.
+   このスコープユニットはシステム・サービスマネージャ (PID 1) が存在する場所になります。システムが立ち上がっている間はアクティブになります。
 
 initrd-fs.target
-   systemd-fstab-generator(3) automatically adds dependencies of type Before= to sysroot-usr.mount and all mount points found in /etc/fstab that have x-initrd.mount and not have noauto mount options set.
+   :doc:`systemd-fstab-generator.3` は自動的に sysroot-usr.mount と、**x-initrd.mount** が設定され **noauto** マウントオプションが設定されていない /etc/fstab の全てのマウントポイントに *Before=* タイプの依存を追加します。
 
 initrd-root-device.target
-   A special initrd target unit that is reached when the root filesystem device is available, but before it has been mounted. systemd-fstab-generator(3) and systemd-gpt-auto-generator(3) automatically setup the appropriate dependencies to make this happen.
+   ルートファイルシステムデバイスが利用可能になったときに、マウントされる前に実行される特殊な initrd ターゲットユニット。:doc:`systemd-fstab-generator.3` と :doc:`systemd-gpt-auto-generator.3` によって自動的に適切な依存関係がセットアップされます。
 
 initrd-root-fs.target
-   systemd-fstab-generator(3) automatically adds dependencies of type Before= to the sysroot.mount unit, which is generated from the kernel command line.
+   :doc:`systemd-fstab-generator.3` によってカーネルコマンドラインから生成される sysroot.mount ユニットに *Before=* タイプの依存が追加されます。
 
 kbrequest.target
    systemd starts this target whenever Alt+ArrowUp is pressed on the console. Note that any user with physical access to the machine will be able to do this, without authentication, so this should be used carefully.
@@ -335,7 +335,7 @@ machine.slice
 --------
 
 :doc:`systemd.1`,
-:doc:`systemd.unit.5`,ｌ
+:doc:`systemd.unit.5`,
 :doc:`systemd.service.5`,
 :doc:`systemd.socket.5`,
 :doc:`systemd.target.5`,
