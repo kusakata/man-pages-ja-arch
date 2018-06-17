@@ -234,74 +234,74 @@ SIGRTMIN+16
    即座に kexec でマシンを再起動します。
 
 SIGRTMIN+20
-   Enables display of status messages on the console, as controlled via systemd.show_status=1 on the kernel command line.
+   コンソールの状態メッセージの表示を有効にします。カーネルコマンドラインの *systemd.show_status=1* でも同じように制御されます。
 
 SIGRTMIN+21
-   Disables display of status messages on the console, as controlled via systemd.show_status=0 on the kernel command line.
+   コンソールの状態メッセージの表示を無効化します。カーネルコマンドラインの *systemd.show_status=0* でも同じように制御されます。
 
 SIGRTMIN+22, SIGRTMIN+23
-   Sets the log level to "debug" (or "info" on SIGRTMIN+23), as controlled via systemd.log_level=debug (or systemd.log_level=info on SIGRTMIN+23) on the kernel command line.
+   ログレベルを "debug" (あるいは **SIGRTMIN+23** の場合は "info") に設定します。カーネルコマンドラインの *systemd.log_level=debug* (あるいは **SIGRTMIN+23** の場合は *systemd.log_level=info*) でも同じように制御されます。
 
 SIGRTMIN+24
-   Immediately exits the manager (only available for --user instances).
+   即座にマネージャを終了します (--user インスタンスのみで使用可能)。
 
 SIGRTMIN+26, SIGRTMIN+27, SIGRTMIN+28
-   Sets the log target to "journal-or-kmsg" (or "console" on SIGRTMIN+27, "kmsg" on SIGRTMIN+28), as controlled via systemd.log_target=journal-or-kmsg (or systemd.log_target=console on SIGRTMIN+27 or systemd.log_target=kmsg on SIGRTMIN+28) on the kernel command line.
+   ログターゲットを "journal-or-kmsg" (**SIGRTMIN+27** の場合は "console"、**SIGRTMIN+28** の場合は "kmsg") に設定します。カーネルコマンドラインの *systemd.log_target=journal-or-kmsg* でも同じように制御されます (あるいは **SIGRTMIN+27** の場合は *systemd.log_target=console* または **SIGRTMIN+28** の場合は *systemd.log_target=kmsg*)。
 
 環境変数
 ----------
 
 .. envvar:: $SYSTEMD_LOG_LEVEL
 
-   systemd reads the log level from this environment variable. This can be overridden with --log-level=.
+   systemd はこの環境変数からログレベルを読み込みます。**--log-level=** で上書き可能です。
 
 .. envvar:: $SYSTEMD_LOG_TARGET
 
-   systemd reads the log target from this environment variable. This can be overridden with --log-target=.
+   systemd はこの環境変数からログターゲットを読み込みます。**--log-target=** で上書き可能です。
 
 .. envvar:: $SYSTEMD_LOG_COLOR
 
-   Controls whether systemd highlights important log messages. This can be overridden with --log-color=.
+   重要なログメッセージをハイライトするかどうか制御します。**--log-color=** で上書き可能です。
 
 .. envvar:: $SYSTEMD_LOG_LOCATION
 
-   Controls whether systemd prints the code location along with log messages. This can be overridden with --log-location=.
+   ログメッセージにコードの位置を出力するかどうか制御します。**--log-location=** で上書き可能です。
 
 .. envvar:: $XDG_CONFIG_HOME, $XDG_CONFIG_DIRS, $XDG_DATA_HOME, $XDG_DATA_DIRS
 
-   The systemd user manager uses these variables in accordance to the XDG Base Directory specification [6]_ to find its configuration.
+   systemd ユーザーマネージャはこの変数を使って **XDG Base Directory specification** [6]_ に従って設定を検索します。
 
 .. envvar:: $SYSTEMD_UNIT_PATH
 
-   Controls where systemd looks for unit files.
+   systemd がユニットファイルを検索するパスを制御します。
 
 .. envvar:: $SYSTEMD_SYSVINIT_PATH
 
-   Controls where systemd looks for SysV init scripts.
+   systemd が SysV init スクリプトを検索するパスを制御します。
 
 .. envvar:: $SYSTEMD_SYSVRCND_PATH
 
-   Controls where systemd looks for SysV init script runlevel link farms.
+   systemd が SysV init スクリプトランレベルリンクファームを検索するパスを制御します。
 
 .. envvar:: $SYSTEMD_COLORS
 
-   The value must be a boolean. Controls whether colorized output should be generated. This can be specified to override the decision that systemd makes based on $TERM and what the console is connected to.
+   値は論理値である必要があります。カラー出力を生成するかどうか制御します。**systemd** は *$TERM* 変数と接続されているコンソールを元にカラー出力するかどうか決定しますが、この変数を指定することで上書きすることができます。
 
 .. envvar:: $LISTEN_PID, $LISTEN_FDS, $LISTEN_FDNAMES
 
-   Set by systemd for supervised processes during socket-based activation. See sd_listen_fds(3) for more information.
+   ソケットベースのアクティベーションで systemd によって設定される監視プロセス。詳しくは :doc:`sd_listen_fds.3` を参照。
 
 .. envvar:: $NOTIFY_SOCKET
 
-   Set by systemd for supervised processes for status and start-up completion notification. See sd_notify(3) for more information.
+   状態・起動補完通知で systemd によって設定される監視プロセス。詳しくは :doc:`sd_notify.3` を参照。
 
 カーネルコマンドライン
 -----------------------
 
-When run as system instance systemd parses a number of kernel command line arguments [7]_:
+システムインスタンスとして実行する場合、systemd は様々なカーネルコマンドライン引数を読み込みます [7]_:
 
 systemd.unit=, rd.systemd.unit=
-   Overrides the unit to activate on boot. Defaults to default.target. This may be used to temporarily boot into a different boot unit, for example rescue.target or emergency.service. See systemd.special(7) for details about these units. The option prefixed with "rd." is honored only in the initial RAM disk (initrd), while the one that is not prefixed only in the main system.
+   起動時にアクティベートするユニットを上書きします。デフォルトは default.target です。別の起動ユニットで一時的に起動するのに使うことができます。例えば rescue.target や emergency.service など。これらのユニットについて詳しくは :doc:`systemd.special.7` を参照してください。"rd." が前に付くオプションは初期 RAM ディスク (initrd) でのみ反映され、プリフィックスが付かないオプションはメイン環境でのみ反映されます。
 
 systemd.dump_core
    Takes a boolean argument or enables the option if specified without an argument. If enabled, the systemd manager (PID 1) dumps core when it crashes. Otherwise, no core dump is created. Defaults to enabled.
@@ -405,7 +405,7 @@ For other kernel command line parameters understood by components of the core OS
 .. [4] https://www.freedesktop.org/wiki/Software/systemd/ContainerInterface
 .. [5] https://www.freedesktop.org/wiki/Software/systemd/InitrdInterface
 .. [6] http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
-.. [7] If run inside a Linux container these arguments may be passed as command line arguments to systemd itself, next to any of the command line options listed in the Options section above. If run outside of Linux containers, these arguments are parsed from /proc/cmdline instead.
+.. [7] Linux コンテナの中で実行する場合、`オプション`_ セクションで説明しているコマンドラインオプションと一緒に、コマンドライン引数として systemd に渡すこともできます。Linux コンテナの外側で実行する場合、引数は /proc/cmdline から読み込まれます。
 .. [8] https://www.kernel.org/doc/Documentation/cgroup-v2.txt
 .. [9] https://www.kernel.org/doc/Documentation/cgroup-v1/
 .. [10] https://www.freedesktop.org/wiki/Software/systemd/
