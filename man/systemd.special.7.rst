@@ -100,12 +100,12 @@ initrd-root-fs.target
    :doc:`systemd-fstab-generator.3` によってカーネルコマンドラインから生成される sysroot.mount ユニットに *Before=* タイプの依存が追加されます。
 
 kbrequest.target
-   systemd starts this target whenever Alt+ArrowUp is pressed on the console. Note that any user with physical access to the machine will be able to do this, without authentication, so this should be used carefully.
+   コンソールで Alt+ArrowUp が押されたときに systemd はこのターゲットを起動します。マシンに物理的にアクセスできるユーザーなら誰でも使うことができるため (認証は必要ありません)、注意して使うようにしてください。
 
 kexec.target
-   A special target unit for shutting down and rebooting the system via kexec.
+   kexec でシステムをシャットダウン・再起動するための特殊なターゲットユニット。
 
-   Applications wanting to reboot the system should not start this unit directly, but should instead execute systemctl kexec (possibly with the --no-block option) or call systemd(1)'s org.freedesktop.systemd1.Manager.KExec D-Bus method directly.
+   システムを再起動したいアプリケーションがこのユニットを直接使ってはいけません。代わりに **systemctl kexec** を実行するか (**--no-block** オプションを付けることができます)、:doc:`systemd.1` の **org.freedesktop.systemd1.Manager.KExec** D-Bus メソッドを直接呼び出してください。
 
 local-fs.target
    systemd-fstab-generator(3) automatically adds dependencies of type Before= to all mount units that refer to local mount points for this target unit. In addition, it adds dependencies of type Wants= to this target unit for those mounts listed in /etc/fstab that have the auto mount option set.
