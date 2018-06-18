@@ -304,10 +304,10 @@ systemd.unit=, rd.systemd.unit=
    起動時にアクティベートするユニットを上書きします。デフォルトは default.target です。別の起動ユニットで一時的に起動するのに使うことができます。例えば rescue.target や emergency.service など。これらのユニットについて詳しくは :doc:`systemd.special.7` を参照してください。"rd." が前に付くオプションは初期 RAM ディスク (initrd) でのみ反映され、プリフィックスが付かないオプションはメイン環境でのみ反映されます。
 
 systemd.dump_core
-   Takes a boolean argument or enables the option if specified without an argument. If enabled, the systemd manager (PID 1) dumps core when it crashes. Otherwise, no core dump is created. Defaults to enabled.
+   論理値で指定するか、何も引数を指定しない場合はオプションが有効になります。有効にすると、systemd マネージャ (PID 1) がクラッシュしたときにコアダンプが生成されます。無効の場合はコアダンプは作成されません。デフォルトは有効です。
 
 systemd.crash_chvt
-   Takes a positive integer, or a boolean argument. Can be also specified without an argument, with the same effect as a positive boolean. If a positive integer (in the range 1–63) is specified, the system manager (PID 1) will activate the specified virtual terminal (VT) when it crashes. Defaults to disabled, meaning that no such switch is attempted. If set to enabled, the VT the kernel messages are written to is selected.
+   正の整数、あるいは論理値を指定します。引数を指定しなかった場合、真の論理値と同じ意味になります。正の整数 (1-63 の範囲) を指定した場合、システムマネージャ (PID 1) はクラッシュしたときに指定した仮想端末 (VT) をアクティベートします。デフォルトでは無効となっており、仮想端末の切り替えは行われません。enabled に設定した場合、カーネルメッセージの書き込み先となっている VT が選択されます。
 
 systemd.crash_shell
    Takes a boolean argument or enables the option if specified without an argument. If enabled, the system manager (PID 1) spawns a shell when it crashes, after a 10s delay. Otherwise, no shell is spawned. Defaults to disabled, for security reasons, as the shell is not protected by password authentication.
