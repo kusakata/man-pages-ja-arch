@@ -310,13 +310,13 @@ systemd.crash_chvt
    正の整数、あるいは論理値を指定します。引数を指定しなかった場合、真の論理値と同じ意味になります。正の整数 (1-63 の範囲) を指定した場合、システムマネージャ (PID 1) はクラッシュしたときに指定した仮想端末 (VT) をアクティベートします。デフォルトでは無効となっており、仮想端末の切り替えは行われません。enabled に設定した場合、カーネルメッセージの書き込み先となっている VT が選択されます。
 
 systemd.crash_shell
-   Takes a boolean argument or enables the option if specified without an argument. If enabled, the system manager (PID 1) spawns a shell when it crashes, after a 10s delay. Otherwise, no shell is spawned. Defaults to disabled, for security reasons, as the shell is not protected by password authentication.
+   論理値で引数を指定します。何も引数を指定しなかった場合、オプションは有効になります。有効にすると、システムマネージャ (PID 1) はクラッシュしたときに10秒待機してからシェルを生成します。無効の場合、シェルは生成されません。シェルがパスワードで保護されないというセキュリティ上の理由から、デフォルトでは無効になっています。
 
 systemd.crash_reboot
-   Takes a boolean argument or enables the option if specified without an argument. If enabled, the system manager (PID 1) will reboot the machine automatically when it crashes, after a 10s delay. Otherwise, the system will hang indefinitely. Defaults to disabled, in order to avoid a reboot loop. If combined with systemd.crash_shell, the system is rebooted after the shell exits.
+   論理値で引数を指定します。何も引数を指定しなかった場合、オプションは有効になります。有効にすると、システムマネージャ (PID 1) はクラッシュしたときに10秒待機してからマシンを自動的に再起動します。無効の場合、システムは永遠にフリーズします。再起動ループに陥らないようにするため、デフォルトでは無効となっています。*systemd.crash_shell* と組み合わせた場合、シェルを終了した後にシステムが再起動します。
 
 systemd.confirm_spawn
-   Takes a boolean argument or a path to the virtual console where the confirmation messages should be emitted. Can be also specified without an argument, with the same effect as a positive boolean. If enabled, the system manager (PID 1) asks for confirmation when spawning processes using /dev/console. If a path or a console name (such as "ttyS0") is provided, the virtual console pointed to by this path or described by the give name will be used instead. Defaults to disabled.
+   論理値または確認メッセージを出力する仮想端末のパスを指定します。引数を指定しない場合、真の論理値と同じ意味になります。有効の場合、システムマネージャ (PID 1) は /dev/console を使ってプロセスを生成するときに確認を要求します。パスまたはコンソール名 ("ttyS0" など) を指定したときは、パスまたは名前によって指定された仮想端末が使われます。デフォルトは無効です。
 
 systemd.service_watchdogs=
    Takes a boolean argument. If disabled, all service runtime watchdogs ( WatchdogSec=) and emergency actions (e.g. OnFailure= or StartLimitAction=) are ignored by the system manager (PID 1); see systemd.service(5). Defaults to enabled, i.e. watchdogs and failure actions are processed normally. The hardware watchdog is not affected by this option.
