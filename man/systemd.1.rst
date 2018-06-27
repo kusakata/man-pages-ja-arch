@@ -316,30 +316,30 @@ systemd.crash_reboot
    論理値で引数を指定します。何も引数を指定しなかった場合、オプションは有効になります。有効にすると、システムマネージャ (PID 1) はクラッシュしたときに10秒待機してからマシンを自動的に再起動します。無効の場合、システムは永遠にフリーズします。再起動ループに陥らないようにするため、デフォルトでは無効となっています。*systemd.crash_shell* と組み合わせた場合、シェルを終了した後にシステムが再起動します。
 
 systemd.confirm_spawn
-   論理値または確認メッセージを出力する仮想端末のパスを指定します。引数を指定しない場合、真の論理値と同じ意味になります。有効の場合、システムマネージャ (PID 1) は /dev/console を使ってプロセスを生成するときに確認を要求します。パスまたはコンソール名 ("ttyS0" など) を指定したときは、パスまたは名前によって指定された仮想端末が使われます。デフォルトは無効です。
+   論理値または確認メッセージを出力する仮想端末のパスを指定します。引数を指定しない場合、真の論理値と同じ意味になります。有効の場合、システムマネージャ (PID 1) は **/dev/console** を使ってプロセスを生成するときに確認を要求します。パスまたはコンソール名 ("ttyS0" など) を指定したときは、パスまたは名前によって指定された仮想端末が使われます。デフォルトは無効です。
 
 systemd.service_watchdogs=
-   Takes a boolean argument. If disabled, all service runtime watchdogs ( WatchdogSec=) and emergency actions (e.g. OnFailure= or StartLimitAction=) are ignored by the system manager (PID 1); see systemd.service(5). Defaults to enabled, i.e. watchdogs and failure actions are processed normally. The hardware watchdog is not affected by this option.
+   論理値を指定します。無効の場合、全てのサービス実行時ウォッチドッグ (**WatchdogSec=**) と緊急アクション (例: **OnFailure=** または **StartLimitAction=**) はシステムマネージャ (PID 1) によって無視されます。:doc:`systemd.service.5` を見てください。デフォルトでは有効になっており、ウォッチドッグと失敗時のアクションは通常通りに処理されます。このオプションはハードウェアウォッチドッグに影響を与えません。
 
 systemd.show_status
-   Takes a boolean argument or the constant auto. Can be also specified without an argument, with the same effect as a positive boolean. If enabled, the systemd manager (PID 1) shows terse service status updates on the console during bootup. auto behaves like false until a unit fails or there is a significant delay in boot. Defaults to enabled, unless quiet is passed as kernel command line option, in which case it defaults to auto. If specified overrides the system manager configuration file option ShowStatus=, see systemd-system.conf(5). However, the process command line option --show-status= takes precedence over both this kernel command line option and the configuration file option.
+   論理値あるいは定数 **auto** を指定します。引数を付けずに指定することもでき、正の論理値と同じ効果を持ちます。有効の場合、systemd マネージャ (PID 1) は起動時にサービスの状態更新を簡潔にコンソールに表示します。**auto** はユニットが失敗するまで、あるいは起動に異常に時間がかかっている場合を除いて **false** と同じように振る舞います。デフォルトでは有効ですが、カーネルコマンドラインに **quiet** を指定した場合は、デフォルトで **auto** となります。カーネルコマンドラインで指定することでシステムマネージャの設定ファイルのオプション **ShowStatus=** が上書きされます。:doc:`systemd-system.conf.5` を参照してください。ただし、プロセスのコマンドラインオプション **--show-status=** はカーネルコマンドラインのオプションと設定ファイルのオプションどちらよりも優先されます。
 
 systemd.log_target=, systemd.log_level=, systemd.log_location=, systemd.log_color
-   Controls log output, with the same effect as the $SYSTEMD_LOG_TARGET, $SYSTEMD_LOG_LEVEL, $SYSTEMD_LOG_LOCATION, $SYSTEMD_LOG_COLOR environment variables described above. systemd.log_color can be specified without an argument, with the same effect as a positive boolean.
+   ログの出力を制御します。上述の :envvar:`$SYSTEMD_LOG_TARGET`, :envvar:`$SYSTEMD_LOG_LEVEL`, :envvar:`$SYSTEMD_LOG_LOCATION`, :envvar:`$SYSTEMD_LOG_COLOR` 環境変数と同じ効果を持ちます。*systemd.log_color* は引数を付けずに指定でき、その場合は正の論理値と同じ効果を持ちます。
 
 systemd.default_standard_output=, systemd.default_standard_error=
-   Controls default standard output and error output for services, with the same effect as the --default-standard-output= and --default-standard-error= command line arguments described above, respectively.
+   サービスのデフォルトの標準出力とエラー出力を制御します。上述のコマンドライン引数 **--default-standard-output=** と **--default-standard-error=** と同じ効果を持ちます。
 
 systemd.setenv=
-   Takes a string argument in the form VARIABLE=VALUE. May be used to set default environment variables to add to forked child processes. May be used more than once to set multiple variables.
+   VARIABLE=VALUE という形式で引数を指定します。フォークされた子プロセスに追加するデフォルトの環境変数を設定できます。複数回使用して複数の変数を設定できます。
 
 systemd.machine_id=
-   Takes a 32 character hex value to be used for setting the machine-id. Intended mostly for network booting where the same machine-id is desired for every boot.
+   machine-id を設定するときに使用する32文字の16進数の値を指定します。毎回同じ machine-id を使いたいネットワークブートなどで使用します。
 
 systemd.unified_cgroup_hierarchy
-   When specified without an argument or with a true argument, enables the usage of unified cgroup hierarchy [8]_ (a.k.a. cgroups-v2). When specified with a false argument, fall back to hybrid or full legacy cgroup hierarchy.
+   引数を付けずに指定した場合や true 引数が指定された場合、統合的 cgroup 階層 [8]_ (別名 cgroups-v2) の使用が有効になります。false 引数を指定した場合、ハイブリッドあるいはレガシーな cgroup 階層にフォールバックします。
 
-   If this option is not specified, the default behaviour is determined during compilation (the --with-default-hierarchy= option). If the kernel does not support unified cgroup hierarchy, the legacy hierarchy will be used even if this option is specified.
+   このオプションを指定しなかった場合、デフォルトの挙動はコンパイル時の設定によって決まります (**--with-default-hierarchy=** オプション)。カーネルが統合 cgroup 階層をサポートしていない場合、このオプションを指定していてもレガシー階層が使われます。
 
 systemd.legacy_systemd_cgroup_controller
    Takes effect if the full unified cgroup hierarchy is not used (see previous option). When specified without an argument or with a true argument, disables the use of "hybrid" cgroup hierarchy (i.e. a cgroups-v2 tree used for systemd, and legacy cgroup hierarchy [9]_, a.k.a. cgroups-v1, for other controllers), and forces a full "legacy" mode. When specified with a false argument, enables the use of "hybrid" hierarchy.
