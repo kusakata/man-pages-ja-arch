@@ -342,41 +342,41 @@ systemd.unified_cgroup_hierarchy
    このオプションを指定しなかった場合、デフォルトの挙動はコンパイル時の設定によって決まります (**--with-default-hierarchy=** オプション)。カーネルが統合 cgroup 階層をサポートしていない場合、このオプションを指定していてもレガシー階層が使われます。
 
 systemd.legacy_systemd_cgroup_controller
-   Takes effect if the full unified cgroup hierarchy is not used (see previous option). When specified without an argument or with a true argument, disables the use of "hybrid" cgroup hierarchy (i.e. a cgroups-v2 tree used for systemd, and legacy cgroup hierarchy [9]_, a.k.a. cgroups-v1, for other controllers), and forces a full "legacy" mode. When specified with a false argument, enables the use of "hybrid" hierarchy.
+   完全な統合 cgroup 階層が使われない場合にのみ効果を持ちます (前のオプションを参照)。引数を付けずに指定した場合や true 引数を付けた場合、(systemd では cgroups-v2 ツリーを使用して他のコントローラではレガシーな cgroup 階層である cgroups-v1 [9]_ を使用する) ハイブリッドの cgroup 階層の使用が無効になり、強制的に完全なレガシーモードになります。false 引数を指定した場合は、ハイブリッド階層の使用が有効になります。
 
-   If this option is not specified, the default behaviour is determined during compilation (the --with-default-hierarchy= option). If the kernel does not support unified cgroup hierarchy, the legacy hierarchy will be used even if this option is specified.
+   このオプションを指定しなかった場合、デフォルトの挙動はコンパイルの設定によって決まります (**--with-default-hierarchy=** オプション)。カーネルが統合 cgroup 階層をサポートしていなかった場合、このオプションを使用していてもレガシー階層が使われます。
 
 quiet
-   Turn off status output at boot, much like systemd.show_status=false would. Note that this option is also read by the kernel itself and disables kernel log output. Passing this option hence turns off the usual output from both the system manager and the kernel.
+   起動時の状態出力をオフになります。ほとんど *systemd.show_status=false* と同じです。このオプションはカーネルによっても読み込まれるためカーネルのログ出力も無効になります。このオプションを指定することでシステムマネージャとカーネルの両方からの通常出力がオフになります。
 
 debug
-   Turn on debugging output. This is equivalent to systemd.log_level=debug. Note that this option is also read by the kernel itself and enables kernel debug output. Passing this option hence turns on the debug output from both the system manager and the kernel.
+   デバッグ出力をオンにします。*systemd.log_level=debug* と同等の効果を持ちます。このオプションはカーネルによっても読み込まれるため、カーネルのデバッグ出力も有効になります。したがって、このオプションを指定するとシステムマネージャとカーネル両方のデバッグ出力が有効になります。
 
 emergency, rd.emergency, -b
-   Boot into emergency mode. This is equivalent to systemd.unit=emergency.target or rd.systemd.unit=emergency.target, respectively, and provided for compatibility reasons and to be easier to type.
+   緊急モードで起動します。*systemd.unit=emergency.target* あるいは *rd.systemd.unit=emergency.target* と同じ効果を持っており、互換性のために存在するオプションです。
 
 rescue, rd.rescue, single, s, S, 1
-   Boot into rescue mode. This is equivalent to systemd.unit=rescue.target or rd.systemd.unit=rescue.target, respectively, and provided for compatibility reasons and to be easier to type.
+   レスキューモードで起動します。*systemd.unit=rescue.target* あるいは *rd.systemd.unit=rescue.target* と同じ効果を持っており、互換性のために存在するオプションです。
 
 2, 3, 4, 5
-   Boot into the specified legacy SysV runlevel. These are equivalent to systemd.unit=runlevel2.target, systemd.unit=runlevel3.target, systemd.unit=runlevel4.target, and systemd.unit=runlevel5.target, respectively, and provided for compatibility reasons and to be easier to type.
+   指定した旧 SysV のランレベルで起動します。*systemd.unit=runlevel2.target*, *systemd.unit=runlevel3.target*, *systemd.unit=runlevel4.target*, *systemd.unit=runlevel5.target* と同等で互換性のために存在するオプションです。
 
 locale.LANG=, locale.LANGUAGE=, locale.LC_CTYPE=, locale.LC_NUMERIC=, locale.LC_TIME=, locale.LC_COLLATE=, locale.LC_MONETARY=, locale.LC_MESSAGES=, locale.LC_PAPER=, locale.LC_NAME=, locale.LC_ADDRESS=, locale.LC_TELEPHONE=, locale.LC_MEASUREMENT=, locale.LC_IDENTIFICATION=
-   Set the system locale to use. This overrides the settings in /etc/locale.conf. For more information, see locale.conf(5) and locale(7).
+   使用するシステムロケールを設定します。このオプションは /etc/locale.conf の設定を上書きします。詳しくは :doc:`locale.conf.5` や :doc:`locale.7` を参照。
 
-For other kernel command line parameters understood by components of the core OS, please refer to kernel-command-line(7).
+コア OS のコンポーネントによって認識される他のカーネルコマンドラインパラメータについては :doc:`kernel-command-line.7` を参照してください。
 
 ソケットと FIFO
 ------------------
 
 /run/systemd/notify
-   Daemon status notification socket. This is an AF_UNIX datagram socket and is used to implement the daemon notification logic as implemented by sd_notify(3).
+   デーモン状態通知ソケット。**AF_UNIX** データグラムソケットであり、:doc:`sd_notify.3` によって実装されているように重要なデーモン通知ロジックを実装するのに使われます。
 
 /run/systemd/private
-   Used internally as communication channel between systemctl(1) and the systemd process. This is an AF_UNIX stream socket. This interface is private to systemd and should not be used in external projects.
+   :doc:`systemctl.1` と systemd プロセスが内部的に使用する通信チャンネル。**AF_UNIX** ストリームソケットです。このインターフェイスは systemd が内部的に使用するものであり外部プロジェクトでは使用できません。
 
 /dev/initctl
-   Limited compatibility support for the SysV client interface, as implemented by the systemd-initctl.service unit. This is a named pipe in the file system. This interface is obsolete and should not be used in new applications.
+   SysV クライアントインターフェイスの限定的な互換サポート。systemd-initctl.service ユニットによって実装。ファイルシステムの名前付きパイプです。このインターフェイスは非推奨であり新しいアプリケーションで使用してはいけません。
 
 関連項目
 --------
