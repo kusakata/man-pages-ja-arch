@@ -108,10 +108,10 @@ kexec.target
    システムを再起動したいアプリケーションがこのユニットを直接使ってはいけません。代わりに **systemctl kexec** を実行するか (**--no-block** オプションを付けることができます)、:doc:`systemd.1` の **org.freedesktop.systemd1.Manager.KExec** D-Bus メソッドを直接呼び出してください。
 
 local-fs.target
-   systemd-fstab-generator(3) automatically adds dependencies of type Before= to all mount units that refer to local mount points for this target unit. In addition, it adds dependencies of type Wants= to this target unit for those mounts listed in /etc/fstab that have the auto mount option set.
+   :doc:`systemd-fstab-generator.3` は自動的にローカルマウントポイントを参照する全てのマウントユニットにこのターゲットユニットの *Before=* タイプの依存を追加します。さらに、/etc/fstab に記述されているマウントに **auto** マウントオプションが設定されている場合、このターゲットユニットに *Wants=* タイプの依存が追加されます。
 
 machines.target
-   A standard target unit for starting all the containers and other virtual machines. See systemd-nspawn@.service for an example.
+   全てのコンテナと仮想マシンを起動するための標準ターゲットユニット。例は systemd-nspawn@.service を参照。
 
 multi-user.target
    A special target unit for setting up a multi-user system (non-graphical). This is pulled in by graphical.target.
