@@ -114,39 +114,39 @@ machines.target
    全てのコンテナと仮想マシンを起動するための標準ターゲットユニット。例は systemd-nspawn@.service を参照。
 
 multi-user.target
-   A special target unit for setting up a multi-user system (non-graphical). This is pulled in by graphical.target.
+   マルチユーザーシステム (非グラフィカル) をセットアップするための特殊なターゲットユニット。graphical.target によって使われます。
 
-   Units that are needed for a multi-user system shall add Wants= dependencies for their unit to this unit during installation. This is best configured via WantedBy=multi-user.target in the unit's "[Install]" section.
+   マルチユーザーシステムに必要なユニットはインストール時にこのユニットに *Wants=* 依存を追加します。ユニットの "[Install]" セクションで *WantedBy=multi-user.target* と設定するのが最適です。
 
 network-online.target
-   Units that strictly require a configured network connection should pull in network-online.target (via a Wants= type dependency) and order themselves after it. This target unit is intended to pull in a service that delays further execution until the network is sufficiently set up. What precisely this requires is left to the implementation of the network managing service.
+   ネットワーク接続を必要とするユニットは (*Wants=* タイプの依存で) network-online.target を必要とすることでネットワークが設定されてから起動するようになります。このターゲットユニットはネットワークが正しく立ち上がるまでサービスの実行を遅らせるために存在しています。ネットワーク管理サービスの実装に依存します。
 
-   Note the distinction between this unit and network.target. This unit is an active unit (i.e. pulled in by the consumer rather than the provider of this functionality) and pulls in a service which possibly adds substantial delays to further execution. In contrast, network.target is a passive unit (i.e. pulled in by the provider of the functionality, rather than the consumer) that usually does not delay execution much. Usually, network.target is part of the boot of most systems, while network-online.target is not, except when at least one unit requires it. Also see Running Services After the Network is up [1]_ for more information.
+   このユニットと network.target は違いがあるので注意してください。このユニットは能動的なユニットであり (したがって機能の提供者ではなく使用者によって使われます)、サービスを引き込むことで実行までの時間を伸ばします。逆に、network.target は受動的なユニットであり (機能の提供者によって使われます)、実行時間が伸びることはありません。通常、network.target はほとんどの環境で使われますが、network-online.target はどれかユニットが必要としないかぎり使用しません。詳しくは **Running Services After the Network is up** [1]_ も参照してください。
 
-   All mount units for remote network file systems automatically pull in this unit, and order themselves after it. Note that networking daemons that simply provide functionality to other hosts generally do not need to pull this in.
+   リモートのネットワークファイルシステムのマウントユニットは自動的にこのユニットに依存して、後で起動するようになります。他のホストに機能を提供するネットワークデーモンはこのユニットに依存する必要はありません。
 
-   systemd automatically adds dependencies of type Wants= and After= for this target unit to all SysV init script service units with an LSB header referring to the "$network" facility.
+   systemd は "$network" ファシリティを参照する LSB ヘッダーが付与された SysV init スクリプトサービスユニットについて自動的に Wants= と After= タイプのこのターゲットユニットの依存を追加します。
 
-   Note that this unit is only useful during the original system start-up logic. After the system has completed booting up, it will not track the online state of the system anymore. Due to this it cannot be used as a network connection monitor concept, it is purely a one-time system start-up concept.
+   このユニットは最初のシステム起動ロジックでおいてのみ有用です。システムの起動が完了した後、システムのオンライン状態は追跡されません。そのため、ネットワーク接続を監視するためにこのユニットを用いることはできず、あくまでシステムの起動時一回きりでしか使用できません。
 
 paths.target
-   A special target unit that sets up all path units (see systemd.path(5) for details) that shall be active after boot.
+   起動後にアクティブにする全てのパスユニットをセットアップする特殊なターゲットユニット (詳しくは :doc:`systemd.path.5` を参照)。
 
-   It is recommended that path units installed by applications get pulled in via Wants= dependencies from this unit. This is best configured via a WantedBy=paths.target in the path unit's "[Install]" section.
+   アプリケーションによってインストールされたパスユニットはこのユニットから *Wants=* 依存を使って依存させることが推奨されます。パスユニットの "[Install]" セクションで *WantedBy=paths.target* と設定するのが最適です。
 
 poweroff.target
-   A special target unit for shutting down and powering off the system.
+   システムをシャットダウン・電源オフするときの特殊なターゲットユニット。
 
-   Applications wanting to power off the system should not start this unit directly, but should instead execute systemctl poweroff (possibly with the --no-block option) or call systemd-logind(8)'s org.freedesktop.login1.Manager.PowerOff D-Bus method directly.
+   システムの電源を切りたいアプリケーションがこのユニットを直接使ってはいけません。代わりに **systemctl poweroff** を (任意で --no-block オプションを付けて) 実行するか :doc:`systemd-logind.8` の **org.freedesktop.login1.Manager.PowerOff** D-Bus メソッドを直接呼び出してください。
 
-   runlevel0.target is an alias for this target unit, for compatibility with SysV.
+   runlevel0.target は SysV との互換性を保つため、このターゲットユニットのエイリアスとなっています。
 
 reboot.target
-   A special target unit for shutting down and rebooting the system.
+   システムをシャットダウン・再起動するための特殊なターゲットユニット。
 
-   Applications wanting to reboot the system should not start this unit directly, but should instead execute systemctl reboot (possibly with the --no-block option) or call systemd-logind(8)'s org.freedesktop.login1.Manager.Reboot D-Bus method directly.
+   システムを再起動したいアプリケーションがこのユニットを直接使ってはいけません。代わりに **systemctl reboot** を (任意で --no-block オプションを付けて) 実行するか :doc:`systemd-logind.8` の **org.freedesktop.login1.Manager.Reboot** D-Bus メソッドを直接呼び出してください。
 
-   runlevel6.target is an alias for this target unit, for compatibility with SysV.
+   runlevel6.target は SysV との互換性を保つため、このターゲットユニットのエイリアスとなっています。
 
 remote-cryptsetup.target
    Similar to cryptsetup.target, but for encrypted devices which are accessed over the network. It is used for crypttab(8) entries marked with _netdev.
