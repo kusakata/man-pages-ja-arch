@@ -149,19 +149,19 @@ reboot.target
    runlevel6.target は SysV との互換性を保つため、このターゲットユニットのエイリアスとなっています。
 
 remote-cryptsetup.target
-   Similar to cryptsetup.target, but for encrypted devices which are accessed over the network. It is used for crypttab(8) entries marked with _netdev.
+   cryptsetup.target と似ていますが、ネットワークを介してアクセスする暗号化デバイスで使います。**_netdev** が付いた :doc:`crypttab.8` エントリで使用。
 
 remote-fs.target
-   Similar to local-fs.target, but for remote mount points.
+   local-fs.target と似ていますが、リモートのマウントポイントで使います。
 
-   systemd automatically adds dependencies of type After= for this target unit to all SysV init script service units with an LSB header referring to the "$remote_fs" facility.
+   systemd は LSB ヘッダーで "$remote_fs" ファシリティを参照している SysV init スクリプトサービスユニットに自動的に *After=* タイプの依存を追加します。
 
 rescue.target
-   A special target unit that pulls in the base system (including system mounts) and spawns a rescue shell. Isolate to this target in order to administer the system in single-user mode with all file systems mounted but with no services running, except for the most basic. Compare with emergency.target, which is much more reduced and does not provide the file systems or most basic services. Compare with multi-user.target, this target could be seen as 　single-user.target.
+   (システムマウントを含む) ベースシステムを呼び出して緊急シェルを生成する特殊なターゲットユニット。全てのファイルシステムがマウントされサービスが動作していないシングルユーザーモードでシステムを管理したい場合にこのターゲットを使用します。emergency.target は rescue.target よりも限定的なターゲットとなっておりファイルシステムや基本的なサービスも提供しません。multi-user.target と比べた場合、このターゲットは single-user.target と考えられます。
 
-   runlevel1.target is an alias for this target unit, for compatibility with SysV.
+   SysV との互換性を保つために、runlevel1.target はこのターゲットユニットのエイリアスとなっています。
 
-   Use the "systemd.unit=rescue.target" kernel command line option to boot into this mode. A short alias for this kernel command line option is "1", for compatibility with SysV.
+   このモードで起動するには "systemd.unit=rescue.target" カーネルコマンドラインオプションを使用します。SysV と互換性をとるためにカーネルコマンドラインオプションの省略形として "1" が使えます。
 
 runlevel2.target, runlevel3.target, runlevel4.target, runlevel5.target
    These are targets that are called whenever the SysV compatibility code asks for runlevel 2, 3, 4, 5, respectively. It is a good idea to make this an alias for (i.e. symlink to) graphical.target (for runlevel 5) or multi-user.target (the others).
