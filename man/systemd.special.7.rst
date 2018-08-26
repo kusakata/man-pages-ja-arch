@@ -164,10 +164,10 @@ rescue.target
    このモードで起動するには "systemd.unit=rescue.target" カーネルコマンドラインオプションを使用します。SysV と互換性をとるためにカーネルコマンドラインオプションの省略形として "1" が使えます。
 
 runlevel2.target, runlevel3.target, runlevel4.target, runlevel5.target
-   These are targets that are called whenever the SysV compatibility code asks for runlevel 2, 3, 4, 5, respectively. It is a good idea to make this an alias for (i.e. symlink to) graphical.target (for runlevel 5) or multi-user.target (the others).
+   これらのターゲットは SysV の互換コードがランレベル 2, 3, 4, 5 を要求したときに呼び出されます。graphical.target (ランレベル 5 の場合) あるいは multi-user.target (その他のランレベル) のエイリアス (シンボリックリンク) にすると良いでしょう。
 
 shutdown.target
-   A special target unit that terminates the services on system shutdown.
+   システムのシャットダウン時にサービスを終了する特殊なターゲットユニット。
 
    Services that shall be terminated on system shutdown shall add Conflicts= and Before= dependencies to this unit for their service unit, which is implicitly done when DefaultDependencies=yes is set (the default).
 
