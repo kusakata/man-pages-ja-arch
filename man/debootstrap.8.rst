@@ -51,17 +51,21 @@ file:/ URL は (RFC1738 でローカルのファイル名の正しいスキー�
 
    デフォルトでは、debootstrap は欠けている依存関係を自動的に解決して、見つかった場合は警告を表示します。dpkg や apt のような完全な依存解決ではないので注意してください。また、このオプションを使うよりも完全なベースシステムを指定するほうが好ましいとされます。このオプションを設定した場合、依存解決が無効になります。
 
+.. option:: --log-extra-deps
+
+   パッケージの依存関係を解決するときに依存関係を記録したい場合、このオプションを設定することで debootstrap.log に記録されます。
+
 .. option:: --variant=minbase|buildd|fakechroot
 
    使用するブートストラップスクリプトの名前を指定します。現在のところ、サポートされているスクリプトは、必須パッケージと apt だけが含まれている minbase と、build-essential パッケージをインストールする buildd、そして root 権限を使わずにパッケージをインストールする fakechroot です。**--variant=X** 引数を指定しなかった場合、apt を含む、プライオリティが *required* および *important* の全てのパッケージが含まれたベース Debian 環境がデフォルトで作成されます。
 
 .. option:: --merged-usr
 
-   /{bin,sbin,lib}/ を /usr/ にまとめるシンボリックリンクを作成します。
+   /{bin,sbin,lib}/ を /usr/ にまとめるシンボリックリンクを作成します (ほとんどの環境でデフォルト)。
 
 .. option:: --no-merged-usr
 
-   /{bin,sbin,lib}/ を /usr/ にまとめるシンボリックリンクを作成しません (デフォルト)。
+   /{bin,sbin,lib}/ を /usr/ にまとめるシンボリックリンクを作成しません (buildd でデフォルト)。
 
 .. option:: --keyring=KEYRING
 
