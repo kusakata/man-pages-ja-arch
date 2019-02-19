@@ -169,52 +169,52 @@ runlevel2.target, runlevel3.target, runlevel4.target, runlevel5.target
 shutdown.target
    システムのシャットダウン時にサービスを終了する特殊なターゲットユニット。
 
-   Services that shall be terminated on system shutdown shall add Conflicts= and Before= dependencies to this unit for their service unit, which is implicitly done when DefaultDependencies=yes is set (the default).
+   システムのシャットダウン時に終了されるサービスはこのユニットの *Conflicts=* と *Before=* の依存にサービスユニットを追加します。*DefaultDependencies=yes* が設定されている場合は黙示的に行われます (デフォルト設定)。
 
 sigpwr.target
-   A special target that is started when systemd receives the SIGPWR process signal, which is normally sent by the kernel or UPS daemons when power fails.
+   systemd が SIGPWRA プロセスシグナルを受信したときに起動される特殊なターゲットユニット。通常は電源が喪失したときにカーネルあるいは UPS デーモンによって送信されます。
 
 sleep.target
-   A special target unit that is pulled in by suspend.target, hibernate.target and hybrid-sleep.target and may be used to hook units into the sleep state logic.
+   suspend.target, hibernate.target, hybrid-sleep.target によって呼び出される特殊なターゲットユニット。スリープステートのロジックにユニットをフックするのに使われます。
 
 slices.target
-   A special target unit that sets up all slice units (see systemd.slice(5) for details) that shall be active after boot. By default the generic system.slice slice unit, as well as the root slice unit -.slice, is pulled in and ordered before this unit (see below).
+   起動後に有効になる全てのスライスユニット (詳しくは :doc:`systemd.slice.5` を参照) を設定する特殊なターゲットユニット。デフォルトでは汎用の system.slice スライスユニットとルートスライスユニット -.slice がこのユニットの前に呼び出されます (下を参照)。
 
-   It's a good idea to add WantedBy=slices.target lines to the "[Install]" section of all slices units that may be installed dynamically.
+   動的にインストールするスライスユニットは "[Install]" セクションに WantedBy=slices.target 行を追加すると良いでしょう。
 
 sockets.target
-   A special target unit that sets up all socket units (see systemd.socket(5) for details) that shall be active after boot.
+   起動後に有効になる全てのソケットユニット (詳しくは :doc:`systemd.socket.5` を参照) を設定する特殊なターゲットユニット。
 
-   Services that can be socket-activated shall add Wants= dependencies to this unit for their socket unit during installation. This is best configured via a WantedBy=sockets.target in the socket unit's "[Install]" section.
+   ソケットアクティベーションを使用するサービスはソケットユニットで Wants= 依存をこのユニットに追加します。ソケットユニットの "[Install]" セクションで WantedBy=sockets.target と設定するのが良いでしょう。
 
 suspend.target
-   A special target unit for suspending the system. This pulls in sleep.target.
+   システムをサスペンドするための特殊なターゲットユニット。sleep.target を呼び出します。
 
 swap.target
-   Similar to local-fs.target, but for swap partitions and swap files.
+   local-fs.target と似ていますが、スワップパーティションやスワップファイルを対象とします。
 
 sysinit.target
-   systemd automatically adds dependencies of the types Requires= and After= for this target unit to all services (except for those with DefaultDependencies=no).
+   systemd は自動的に全てのサービスにこのターゲットユニットの *Requires=* と *After=* タイプの依存を追加します (*DefaultDependencies=no* と設定されたサービスは例外)。
 
-   This target pulls in the services required for system initialization. System services pulled in by this target should declare DefaultDependencies=no and specify all their dependencies manually, including access to anything more than a read only root filesystem. For details on the dependencies of this target, refer to bootup(7).
+   このターゲットはシステムの初期化に必要なサービスを呼び出します。このターゲットで呼び出されたシステムサービスは *DefaultDependencies=no* を宣言して全ての依存関係を手動で指定する必要があります。読み取り専用のルートファイルシステ以外の全てのファイルシステムへのアクセスも含みます。このターゲットの依存関係について詳しくは :doc:`bootup.7` を参照。
 
 syslog.socket
-   The socket unit syslog implementations should listen on. All userspace log messages will be made available on this socket. For more information about syslog integration, please consult the Syslog Interface [2]_ document.
+   syslog 実装が待機するソケットユニット。全てのユーザースペースのログメッセージはこのソケットから取得できます。syslog の統合について詳しくは、 **Syslog Interface** [2]_ を参照してください。
 
 system-update.target, system-update-cleanup.service
-   A special target unit that is used for offline system updates. systemd-system-update-generator(8) will redirect the boot process to this target if /system-update exists. For more information see systemd.offline-updates(7).
+   オフラインのシステムアップデートに使われる特殊なターゲットユニット。:doc:`systemd-system-update-generator.8` は /system-update が存在する場合、ブートプロセスをこのターゲットにリダイレクトします。詳しくは :doc:`systemd.offline-updates.7` を参照。
 
-   Updates should happen before the system-update.target is reached, and the services which implement them should cause the machine to reboot. As a safety measure, if this does not happen, and /system-update still exists after system-update.target is reached, system-update-cleanup.service will remove this symlink and reboot the machine.
+   アップデートは system-update.target に到達する前に実行される必要があり、アップデートを実装するサービスはマシンを再起動しなくてはなりません。安全策として、再起動が行われない場合、system-update.target に達した後も /system-update が存在するとき、system-update-cleanup.service はシンボリックリンクを削除してマシンを再起動します。
 
 timers.target
-   A special target unit that sets up all timer units (see systemd.timer(5) for details) that shall be active after boot.
+   起動後に有効になる全てのタイマーユニットを設定する特殊なターゲットユニット (詳しくは :doc:`systemd.timer.5` を参照)。
 
-   It is recommended that timer units installed by applications get pulled in via Wants= dependencies from this unit. This is best configured via WantedBy=timers.target in the timer unit's "[Install]" section.
+   アプリケーションによってインストールされるタイマーユニットは全てこのユニットから *Wants=* で起動するようにすることを推奨します。タイマーユニットの "[Install]" セクションで *WantedBy=timers.target* と設定するのが一番良い方法です。
 
 umount.target
-   A special target unit that unmounts all mount and automount points on system shutdown.
+   システムのシャットダウン時に全てのマウント・自動マウントポイントをアンマウントする特殊なターゲットユニット。
 
-   Mounts that shall be unmounted on system shutdown shall add Conflicts dependencies to this unit for their mount unit, which is implicitly done when DefaultDependencies=yes is set (the default).
+   システムのシャットダウン時にアンマウントするマウントはこのユニットの Conflicts 依存にマウントユニットを追加します。*DefaultDependencies=yes* が設定されている場合、黙示的に追加されます (デフォルト設定)。
 
 デバイスの特殊なシステムユニット
 ---------------------------------
