@@ -219,27 +219,27 @@ umount.target
 デバイスの特殊なシステムユニット
 ---------------------------------
 
-Some target units are automatically pulled in as devices of certain kinds show up in the system. These may be used to automatically activate various services based on the specific type of the available hardware.
+一部のターゲットユニットは特定のデバイスがシステムに認識されたときに自動的に起動します。これらのターゲットを使うことで特定の種類のハードウェアが利用可能になったときに様々なサービスを自動的に有効化できます。
 
 bluetooth.target
-   This target is started automatically as soon as a Bluetooth controller is plugged in or becomes available at boot.
+   Bluetooth コントローラが接続されたときあるいは利用可能になったときに自動的に起動するターゲット。
 
-   This may be used to pull in Bluetooth management daemons dynamically when Bluetooth hardware is found.
+   Bluetooth ハードウェアが見つかったときに Bluetooth 管理デーモンを動的に起動できます。
 
 printer.target
-   This target is started automatically as soon as a printer is plugged in or becomes available at boot.
+   プリンターが接続あるいは利用可能になったときに自動起動するターゲット。
 
-   This may be used to pull in printer management daemons dynamically when printer hardware is found.
+   プリンター管理デーモンをプリンターハードウェアが見つかったときに動的に起動することができます。
 
 smartcard.target
-   This target is started automatically as soon as a smartcard controller is plugged in or becomes available at boot.
+   スマートカードコントローラが接続されたときあるいは利用可能になったときに自動的に起動するターゲット。
 
-   This may be used to pull in smartcard management daemons dynamically when smartcard hardware is found.
+   スマートカードハードウェアが見つかったときにスマートカード管理デーモンを動的に起動できます。
 
 sound.target
-   This target is started automatically as soon as a sound card is plugged in or becomes available at boot.
+   サウンドカードが接続あるいは起動時に有効なときに自動的に起動されます。
 
-   This may be used to pull in audio management daemons dynamically when audio hardware is found.
+   オーディオ管理デーモンをオーディオハードウェアが認識されたときに動的に起動することができます。
 
 特殊なパッシブシステムユニット
 ---------------------------------
